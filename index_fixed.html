@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kop Beauty & Salon</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+Lao:wght@300;400;500;600&family=Noto+Serif+Lao:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+:root {
+  --gold:#E8719A; --gold-light:#F9C8D8; --gold-dark:#C0496E;
+  --cream:#FFF5F8; --cream-dark:#FFE4ED;
+  --rose:#F48FB1; --rose-light:#FCE4EC;
+  --charcoal:#3A0D34; --charcoal-mid:#6B2860; --muted:#8A4070;
+  --shadow:0 4px 32px rgba(74,25,66,.12); --shadow-sm:0 2px 12px rgba(74,25,66,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ===== LOGIN ===== */
+#login-page {
+  font-family:'Noto Sans Thai',sans-serif; min-height:100vh; min-height:100dvh;
+  background:linear-gradient(135deg,#4A1942 0%,#8B2D6E 55%,#C0496E 100%);
+  display:none; align-items:center; justify-content:center;
+  padding:1rem; overflow-y:auto; position:relative;
+}
+#login-page.active { display:flex; }
+#otp-page.active { display:flex !important; }
+#booking-loading.active { display:flex !important; }
+#login-page::before { content:''; position:fixed; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at 10% 20%,rgba(232,113,154,.2) 0%,transparent 50%),
+             radial-gradient(ellipse at 90% 80%,rgba(249,200,216,.15) 0%,transparent 45%); }
+.petal-deco{position:fixed;font-size:120px;opacity:.04;font-family:'Playfair Display',serif;color:#fff;pointer-events:none;user-select:none;}
+.petal-deco.t{top:-20px;right:-10px;} .petal-deco.b{bottom:-30px;left:-10px;transform:rotate(180deg);}
+.auth-card{background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(74,25,66,.18);width:100%;max-width:400px;overflow:hidden;position:relative;z-index:1;animation:slideUp .5s cubic-bezier(.34,1.3,.64,1);}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.lcard-head{background:linear-gradient(135deg,#4A1942,#8B2D6E,#C0496E);padding:1.1rem 2rem .9rem;text-align:center;position:relative;overflow:hidden;}
+.lcard-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(249,200,216,.2) 0%,transparent 60%);}
+.l-logo-wrap{width:42px;height:42px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:50%;margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;}
+.l-brand{font-family:'Playfair Display',serif;color:#fff;font-size:19px;font-weight:700;font-style:italic;position:relative;z-index:1;margin-bottom:.1rem;}
+.l-sub{color:rgba(255,255,255,.65);font-size:10px;letter-spacing:.18em;position:relative;z-index:1;}
+.lcard-body{padding:1.1rem 1.5rem 1.25rem;}
+.lfield{margin-bottom:.7rem;}
+.lfield label{display:block;font-size:11px;font-weight:600;color:#7A3565;letter-spacing:.08em;margin-bottom:.3rem;}
+.lfield-wrap{position:relative;}
+.lfield-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#C0496E;font-size:14px;pointer-events:none;}
+.lfield-wrap input{width:100%;padding:12px 14px 12px 36px;border:1.5px solid var(--cream-dark);border-radius:10px;font-family:'Noto Sans Thai',sans-serif;font-size:16px;color:#3A0D34;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+.lfield-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,113,154,.15);}
+.pin-grid{display:flex;gap:10px;justify-content:center;margin-bottom:.4rem;}
+.pin-dot{width:56px;height:56px;border:1.5px solid var(--cream-dark);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gold-dark);font-weight:700;background:#fff;transition:all .2s;user-select:none;}
+.pin-dot.filled{border-color:var(--gold);background:var(--cream);}
+.pin-dot.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,113,154,.2);}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:.8rem;}
+.key-btn{border:1.5px solid var(--cream-dark);border-radius:14px;background:#fff;padding:0;height:64px;font-size:22px;font-weight:600;color:#3A0D34;cursor:pointer;font-family:'Noto Sans Thai',sans-serif;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;transition:background .1s,border-color .1s;outline:none;-webkit-appearance:none;position:relative;overflow:hidden;}
+.key-btn:active{background:var(--cream-dark);border-color:var(--gold);}
+.key-btn.del{color:var(--gold-dark);font-size:20px;}
+.key-btn.empty{border:none!important;background:transparent!important;cursor:default;pointer-events:none;}
+.btn-login{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(192,73,110,.35);margin-top:.6rem;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.btn-login:active{opacity:.85;transform:scale(.98);}
+.lalert{border-radius:10px;padding:.65rem 1rem;font-size:13px;margin-bottom:.8rem;display:none;align-items:center;gap:.5rem;animation:fadeIn .3s ease;}
+.lalert.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.lalert-error{background:#FFF0F3;border:1px solid #FFCDD5;color:#C0496E;}
+.lalert-info{background:#FFF5F8;border:1px solid var(--cream-dark);color:var(--charcoal-mid);}
+
+/* ===== BOOKING PAGE ===== */
+#booking-page{display:none;}
+.panel-sub{font-size:13px;color:#7A3565;margin-bottom:2rem;font-weight:400;}
+.svc-desc{font-size:12px;color:#7A3565;margin-bottom:10px;font-weight:400;}
+.svc-dur{float:right;font-size:11px;color:#7A3565;padding-top:4px;}
+.staff-spec{font-size:11px;color:#7A3565;font-weight:400;}
+.day-label{font-size:11px;color:#7A3565;font-weight:600;padding:4px 0;text-align:center;}
+.time-section-label{font-size:12px;color:#6B2860;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--cream-dark);}
+.summary-key{color:#7A3565;font-size:12px;font-weight:600;}
+.price-label{font-size:13px;color:#7A3565;font-weight:500;}
+.success-sub{font-size:14px;color:#7A3565;margin-bottom:2rem;font-weight:400;}
+.info-strip-item{font-size:13px;color:#5C1F52;font-weight:400;}
+.form-group label{font-size:12px;color:#6B2860;font-weight:600;letter-spacing:.06em;}
+.step-label{font-size:10px;color:#7A3565;letter-spacing:.05em;white-space:nowrap;}
+.step-item.active .step-label{color:var(--charcoal);font-weight:600;}
+.step-item.done .step-label{color:var(--gold-dark);font-weight:500;}
+header{background:linear-gradient(135deg,#4A1942,#8B2D6E);height:70px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(232,113,154,.3);font-family:'Noto Sans Lao',sans-serif;}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,#fff,#FFE4ED);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 12px rgba(192,73,110,.4);overflow:hidden;}
+.logo-text{font-family:'Playfair Display',serif;color:#fff;font-size:22px;font-weight:700;font-style:italic;letter-spacing:.03em;line-height:1.1;text-shadow:0 1px 8px rgba(0,0,0,.2);}
+.logo-text span{display:block;font-size:11px;color:#FFB6CC;font-family:'Noto Sans Lao',sans-serif;letter-spacing:.18em;font-weight:500;font-style:normal;}
+.header-right{display:flex;align-items:center;gap:14px;}
+.header-user{color:#FFD6E7;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;}
+.btn-logout-top{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:'Noto Sans Lao',sans-serif;}
+.hero{background:linear-gradient(135deg,#4A1942 0%,#8B2D6E 60%,#C0496E 100%);min-height:300px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(232,113,154,.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 30%,rgba(249,200,216,.12) 0%,transparent 55%);}
+.hero-deco{position:absolute;font-size:180px;opacity:.03;color:var(--gold);font-family:'Cormorant Garamond',serif;top:-20px;right:-10px;user-select:none;pointer-events:none;font-style:italic;}
+.hero-content{position:relative;z-index:1;}
+.hero-badge{display:inline-block;border:1px solid rgba(249,200,216,.6);color:var(--gold-light);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:5px 18px;border-radius:20px;margin-bottom:1.2rem;font-weight:300;}
+.hero h1{font-family:'Noto Serif Lao',serif;font-size:clamp(34px,6vw,58px);font-weight:300;color:#fff;line-height:1.25;margin-bottom:.8rem;letter-spacing:.04em;text-shadow:0 2px 20px rgba(0,0,0,.25);}
+.hero h1 em{font-style:normal;font-weight:700;background:linear-gradient(90deg,#FFD6E7,#fff 50%,#FFB6CC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 2px 10px rgba(255,182,193,.6));letter-spacing:.06em;}
+.hero p{color:rgba(255,255,255,.80);font-size:14px;font-weight:300;letter-spacing:.04em;max-width:420px;}
+.info-strip{background:var(--cream-dark);border-bottom:1px solid rgba(232,113,154,.2);}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 16px);width:calc(100% - 12px);height:1px;background:var(--cream-dark);z-index:0;transition:background .4s;}
+.step-item.done:not(:last-child)::after{background:var(--gold);}
+.step-num{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cream-dark);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--muted);transition:all .3s;position:relative;z-index:1;}
+.step-item.active .step-num{background:var(--charcoal);border-color:var(--gold);color:var(--gold);}
+.step-item.done .step-num{background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-color:var(--gold-dark);color:#fff;font-size:14px;}
+.panel{display:none;animation:fadeUp .35s ease;}.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:#2D0828;margin-bottom:.3rem;letter-spacing:.02em;}
+.svc-name{font-size:15px;font-weight:700;color:#2D0828;margin-bottom:4px;}
+.staff-name{font-size:14px;font-weight:700;color:#2D0828;margin-bottom:3px;}
+.svc-icon{font-size:28px;margin-bottom:12px;display:block;}
+.service-card{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;height:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--rose));opacity:0;transition:opacity .25s;}
+.service-card:active{border-color:var(--gold);box-shadow:var(--shadow-sm);}
+.service-card.sel{border-color:var(--gold);box-shadow:var(--shadow);background:var(--cream);}
+.service-card.sel::before{opacity:1;}
+.svc-price{display:inline-block;background:var(--cream);color:#C0496E;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid var(--gold-light);}
+.staff-card{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:1.5rem 1rem;cursor:pointer;transition:all .25s;text-align:center;height:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.staff-card:active{border-color:var(--gold-light);box-shadow:var(--shadow-sm);}
+.staff-card.sel{border-color:var(--gold);box-shadow:var(--shadow);background:var(--cream);}
+.staff-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid var(--cream-dark);transition:border-color .25s;}
+.staff-card.sel .staff-avatar{border-color:var(--gold);}
+.staff-badge{margin-top:8px;display:inline-block;font-size:10px;background:var(--cream);color:var(--gold-dark);padding:2px 8px;border-radius:10px;border:1px solid var(--gold-light);}
+.cal-nav{background:none;border:1px solid var(--cream-dark);width:40px;height:40px;border-radius:50%;cursor:pointer;color:var(--charcoal);font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.cal-nav:active{border-color:var(--gold);color:var(--gold);background:var(--cream);}
+.date-cell{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--charcoal);transition:all .2s;font-family:'Noto Sans Lao',sans-serif;}
+.date-cell:hover:not(.past):not(.empty){background:var(--cream-dark);border-color:var(--gold-light);}
+.date-cell.sel{background:var(--charcoal);color:var(--gold);border-color:var(--gold);}
+.date-cell.past{color:var(--cream-dark);cursor:default;}
+.date-cell.empty{cursor:default;}
+.date-cell.today{font-weight:600;border-color:var(--rose-light);}
+.time-slot{padding:12px 8px;text-align:center;font-size:13px;border:1px solid var(--cream-dark);border-radius:8px;cursor:pointer;transition:all .2s;background:#fff;color:var(--charcoal);min-width:64px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;}
+.time-slot:active:not(.busy){background:var(--cream-dark);border-color:var(--gold);}
+.time-slot.sel{background:var(--charcoal);color:var(--gold);border-color:var(--gold);}
+.time-slot.busy{background:var(--cream);color:var(--muted);cursor:default;text-decoration:line-through;opacity:.5;}
+.form-group label{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.06em;}
+.form-group input,.form-group textarea{font-family:'Noto Sans Lao',sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-dark);border-radius:8px;background:#fff;color:var(--charcoal);outline:none;transition:border-color .2s;resize:none;width:100%;-webkit-appearance:none;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,113,154,.15);}
+.form-group textarea{min-height:80px;}
+.summary-card{background:#fff;border:1px solid var(--cream-dark);border-radius:16px;overflow:hidden;margin-bottom:2rem;box-shadow:var(--shadow-sm);}
+.summary-header{background:linear-gradient(135deg,var(--charcoal),var(--charcoal-mid));padding:1.2rem 1.5rem;display:flex;align-items:center;gap:12px;}
+.summary-header-text{color:var(--gold-light);font-size:15px;font-weight:400;}
+.summary-header-sub{font-size:12px;color:rgba(255,255,255,.65);}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:14px 1.5rem;border-bottom:1px solid var(--cream);font-size:14px;}
+.summary-row:last-child{border-bottom:none;}
+.summary-val{color:var(--charcoal);font-weight:400;text-align:right;max-width:60%;}
+.price-total{background:var(--cream);margin:0 1.5rem 1.5rem;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;}
+.price-value{font-size:20px;font-weight:600;color:var(--gold-dark);font-family:'Cormorant Garamond',serif;}
+.success-wrap{text-align:center;padding:2rem 1rem;}
+.success-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 1.5rem;box-shadow:0 8px 32px rgba(232,113,154,.5);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--charcoal);margin-bottom:.5rem;}
+.booking-ref{display:inline-block;background:var(--charcoal);color:var(--gold);font-size:18px;font-weight:600;letter-spacing:.15em;padding:10px 28px;border-radius:8px;margin-bottom:2rem;font-family:'Cormorant Garamond',serif;}
+.success-detail{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;overflow:hidden;margin-bottom:2rem;text-align:left;}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;padding-top:1.5rem;border-top:1px solid var(--cream-dark);flex-wrap:wrap;}
+.btn-outline-custom{background:transparent;border:1px solid #D4A0BC;color:#6B2860;font-family:'Noto Sans Lao',sans-serif;font-size:14px;padding:13px 24px;border-radius:10px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:48px;}
+.btn-outline-custom:active{background:var(--cream-dark);}
+.btn-primary-custom{background:var(--charcoal);border:1px solid var(--charcoal);color:var(--gold-light);font-family:'Noto Sans Lao',sans-serif;font-size:14px;padding:13px 24px;border-radius:10px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:48px;}
+.btn-primary-custom:active{opacity:.85;}
+.btn-primary-custom:disabled{opacity:.4;cursor:not-allowed;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:1px solid var(--gold-dark);color:#fff;font-family:'Noto Sans Lao',sans-serif;font-size:14px;padding:13px 24px;border-radius:10px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:48px;}
+.btn-gold:active{opacity:.85;}
+footer{background:linear-gradient(135deg,#4A1942,#8B2D6E);padding:2rem;text-align:center;font-family:'Noto Sans Lao',sans-serif;}
+.footer-logo{font-family:'Playfair Display',serif;color:#fff;font-size:24px;font-weight:700;font-style:italic;margin-bottom:.5rem;}
+
+/* ===== ADMIN DASHBOARD ===== */
+#admin-page{display:none;font-family:'Noto Sans Lao',sans-serif;background:#F8F0F5;min-height:100vh;}
+.admin-header{background:linear-gradient(135deg,#3A0D34,#6B2860);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(74,25,66,.2);}
+.admin-brand{font-family:'Playfair Display',serif;color:#fff;font-size:18px;font-weight:700;font-style:italic;}
+.admin-brand small{display:block;font-family:'Noto Sans Lao',sans-serif;font-size:10px;font-style:normal;font-weight:400;color:#FFB6CC;letter-spacing:.15em;}
+.admin-nav{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:30px;padding:4px;}
+.nav-tab{padding:6px 14px;border-radius:20px;border:none;background:transparent;color:rgba(255,255,255,.7);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Noto Sans Lao',sans-serif;white-space:nowrap;}
+.nav-tab.active{background:#fff;color:var(--charcoal);font-weight:600;}
+.admin-body{padding:1.5rem;}
+
+/* stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem;}
+.stat-card{background:#fff;border-radius:16px;padding:1.2rem 1rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.pink::before{background:linear-gradient(90deg,var(--gold),var(--gold-dark));}
+.stat-card.purple::before{background:linear-gradient(90deg,#7B3F6E,#3A0D34);}
+.stat-card.green::before{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+.stat-card.blue::before{background:linear-gradient(90deg,#3498db,#2980b9);}
+.stat-val{font-size:26px;font-weight:700;color:var(--charcoal);font-family:'Cormorant Garamond',serif;}
+.stat-label{font-size:11px;color:var(--muted);margin-top:2px;}
+.stat-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:32px;opacity:.15;}
+
+/* section cards */
+.sec-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);margin-bottom:1.5rem;overflow:hidden;}
+.sec-head{padding:1rem 1.2rem;border-bottom:1px solid var(--cream-dark);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sec-title{font-size:14px;font-weight:700;color:var(--charcoal);}
+.sec-body{padding:1.2rem;}
+
+/* booking table */
+.bk-table{width:100%;border-collapse:collapse;font-size:13px;}
+.bk-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;border-bottom:2px solid var(--cream-dark);}
+.bk-table td{padding:10px;border-bottom:1px solid var(--cream);vertical-align:middle;}
+.bk-table tr:last-child td{border-bottom:none;}
+.bk-table tr:hover td{background:var(--cream);}
+.badge-status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-pending{background:#FFF3CD;color:#856404;}
+.badge-confirm{background:#D1FAE5;color:#065F46;}
+.badge-cancel{background:#FEE2E2;color:#991B1B;}
+
+/* mini form */
+.mini-input{width:100%;padding:9px 12px;border:1.5px solid var(--cream-dark);border-radius:8px;font-family:'Noto Sans Lao',sans-serif;font-size:13px;color:var(--charcoal);outline:none;transition:border-color .2s;background:#fff;}
+.mini-input:focus{border-color:var(--gold);}
+.btn-sm-pink{background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;color:#fff;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Noto Sans Lao',sans-serif;}
+.btn-sm-pink:active{opacity:.85;}
+.btn-sm-outline{background:transparent;border:1.5px solid var(--cream-dark);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s;font-family:'Noto Sans Lao',sans-serif;}
+.btn-sm-outline:active{background:var(--cream-dark);}
+.btn-sm-danger{background:transparent;border:1.5px solid #FFCDD5;color:#C0496E;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s;font-family:'Noto Sans Lao',sans-serif;}
+.btn-sm-danger:active{background:#FFF0F3;}
+
+/* staff schedule */
+.schedule-grid{display:grid;grid-template-columns:120px repeat(7,1fr);gap:1px;background:var(--cream-dark);border-radius:8px;overflow:hidden;font-size:11px;}
+.sch-cell{background:#fff;padding:8px 6px;text-align:center;}
+.sch-cell.head{background:var(--charcoal);color:var(--gold-light);font-weight:600;}
+.sch-cell.staff-name-cell{background:var(--cream);font-weight:600;color:var(--charcoal);text-align:left;padding-left:10px;}
+.sch-cell.work{background:#D1FAE5;color:#065F46;cursor:pointer;}
+.sch-cell.off{background:#FEE2E2;color:#991B1B;cursor:pointer;}
+
+/* customer table */
+.cust-avatar{width:32px;height:32px;border-radius:50%;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+
+/* chart bar */
+.chart-bar-wrap{display:flex;flex-direction:column;gap:8px;}
+.chart-row{display:flex;align-items:center;gap:10px;font-size:12px;}
+.chart-label{width:80px;color:var(--charcoal);font-weight:500;text-align:right;flex-shrink:0;}
+.chart-bar-bg{flex:1;background:var(--cream-dark);border-radius:20px;height:18px;overflow:hidden;}
+.chart-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--gold),var(--gold-dark));transition:width .6s ease;}
+.chart-val{width:48px;text-align:right;color:var(--muted);font-size:11px;flex-shrink:0;}
+
+/* whatsapp promo */
+.promo-card{border:1.5px solid #25D366;border-radius:12px;padding:1rem;background:#F0FFF4;}
+.promo-title{font-size:13px;font-weight:700;color:#065F46;margin-bottom:.5rem;}
+
+/* ===== BOTTOM NAV (customer) ===== */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:#fff; border-top:1px solid var(--cream-dark);
+  display:flex; height:62px;
+  box-shadow:0 -4px 20px rgba(74,25,66,.1);
+}
+.bnav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; border:none; background:transparent; cursor:pointer;
+  color:var(--muted); font-size:10px; font-weight:500;
+  font-family:'Noto Sans Lao',sans-serif;
+  transition:all .2s; -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation; padding:6px 4px;
+}
+.bnav-btn .bnav-icon { font-size:20px; line-height:1; }
+.bnav-btn.active { color:var(--gold-dark); }
+.bnav-btn.active .bnav-icon { transform:scale(1.15); }
+/* push content up so bottom nav doesn't cover it */
+#booking-page footer { padding-bottom:5rem; }
+#booking-page .container.py-5 { padding-bottom:6rem !important; }
+
+/* ===== CUSTOMER PAGES ===== */
+.cust-page { display:none; font-family:'Noto Sans Lao',sans-serif; background:var(--cream); min-height:100vh; padding-bottom:5rem; }
+.cust-page-head { background:linear-gradient(135deg,#4A1942,#8B2D6E); padding:1.2rem 1.5rem 1rem; color:#fff; }
+.cust-page-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; font-style:italic; }
+.cust-page-sub { font-size:12px; color:rgba(255,255,255,.65); margin-top:2px; }
+.bk-card {
+  background:#fff; border-radius:14px; margin-bottom:12px;
+  box-shadow:var(--shadow-sm); overflow:hidden;
+  border:1px solid var(--cream-dark);
+}
+.bk-card-head { padding:.9rem 1.1rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--cream-dark); }
+.bk-card-ref { font-family:monospace; font-size:11px; color:var(--muted); }
+.bk-card-body { padding:.9rem 1.1rem; display:flex; flex-direction:column; gap:6px; }
+.bk-card-row { display:flex; gap:8px; font-size:13px; align-items:flex-start; }
+.bk-card-key { color:var(--muted); font-size:11px; font-weight:600; width:60px; flex-shrink:0; padding-top:1px; }
+.bk-card-val { color:var(--charcoal); font-weight:500; }
+.map-frame { width:100%; height:260px; border:none; border-radius:14px; }
+.info-block { background:#fff; border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:12px; box-shadow:var(--shadow-sm); border:1px solid var(--cream-dark); }
+.info-block-title { font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:.6rem; }
+.info-row-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--cream-dark); font-size:13px; }
+.info-row-item:last-child { border-bottom:none; }
+.info-row-icon { font-size:18px; flex-shrink:0; width:28px; text-align:center; }
+
+/* ===== RESPONSIVE FIXES ===== */
+
+/* --- Desktop (≥992px): centre content, cap widths --- */
+@media(min-width:992px){
+  /* Landing: two-column layout on desktop */
+  #landing-page{
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+  }
+  #landing-page > div:first-child{ /* bg petals */
+    position:fixed;
+  }
+  #landing-page .land-fade4{
+    max-width:360px;
+  }
+
+  /* Login / OTP: vertically centre card */
+  #login-page, #otp-page{
+    align-items:center;
+    padding:2rem;
+  }
+  .auth-card{ margin:0; }
+
+  /* Booking: constrain main content width */
+  #booking-page .container.py-5{ max-width:800px; margin:0 auto; }
+
+  /* Admin body: slightly more breathing room */
+  .admin-body{ padding:2rem; }
+  .stat-grid{ grid-template-columns:repeat(4,1fr); }
+}
+
+/* --- Tablet (576px – 991px) --- */
+@media(min-width:576px) and (max-width:991px){
+  #login-page, #otp-page{ align-items:center; padding:2rem 1rem; }
+  .auth-card{ margin:0; }
+  .stat-grid{ grid-template-columns:repeat(2,1fr); }
+  .admin-body{ padding:1.25rem; }
+}
+
+/* --- Mobile (≤575px) --- */
+@media(max-width:575px){
+  /* Landing page: scale down comfortably */
+  #landing-page{
+    overflow-y:auto;
+    min-height:100dvh;
+  }
+  #landing-page > div[style*="flex:1"]{
+    padding:2rem 1.2rem 1rem;
+  }
+  #landing-page .land-fade4{
+    padding:0 1.2rem 2rem;
+  }
+
+  /* Auth pages */
+  #login-page, #otp-page{
+    padding:.75rem;
+    align-items:flex-start;
+  }
+  .auth-card{ border-radius:18px; margin:.75rem 0; }
+  .lcard-body{ padding:.9rem 1rem 1rem; }
+  .lcard-head{ padding:.9rem 1.5rem .7rem; }
+  .pin-dot{ width:48px; height:48px; font-size:20px; }
+  .pin-grid{ gap:8px; }
+  .key-btn{ height:54px; font-size:20px; }
+  .pin-keypad{ gap:8px; }
+
+  /* Header */
+  .header-user{ display:none; }
+  header{ height:58px; }
+  .logo-text{ font-size:18px; }
+  .btn-logout-top{ padding:4px 10px; font-size:11px; }
+
+  /* Hero */
+  .hero{ min-height:180px; padding:2.5rem 1rem !important; }
+  .hero h1{ font-size:26px; }
+  .hero p{ font-size:13px; }
+  .hero-badge{ font-size:10px; padding:4px 14px; }
+
+  /* Info strip: stack items */
+  .info-strip .container{ flex-direction:column; gap:.5rem !important; align-items:flex-start; padding:.5rem 1rem; }
+  .info-strip-item{ font-size:12px; }
+
+  /* Step bar */
+  .step-label{ font-size:8px; }
+  .step-num{ width:28px; height:28px; font-size:11px; }
+
+  /* Panel */
+  .panel-title{ font-size:21px; }
+  .panel-sub{ font-size:12px; margin-bottom:1.25rem; }
+
+  /* Service / staff cards */
+  .service-card{ padding:.9rem; }
+  .svc-name{ font-size:14px; }
+
+  /* Btn row */
+  .btn-row{ flex-direction:column-reverse; gap:8px; }
+  .btn-row .btn-outline-custom,
+  .btn-row .btn-primary-custom,
+  .btn-row .btn-gold{
+    width:100%; text-align:center; justify-content:center; display:flex; align-items:center;
+  }
+
+  /* Summary */
+  .summary-row{ padding:11px 1rem; font-size:13px; }
+  .price-total{ margin:0 1rem 1rem; padding:11px; }
+  .price-value{ font-size:18px; }
+
+  /* Success */
+  .success-circle{ width:72px; height:72px; font-size:30px; }
+  .success-title{ font-size:26px; }
+  .booking-ref{ font-size:15px; padding:8px 20px; }
+
+  /* Admin */
+  .admin-header{ padding:0 1rem; }
+  .admin-brand{ font-size:15px; }
+  .admin-body{ padding:1rem; }
+  .stat-grid{ grid-template-columns:repeat(2,1fr); gap:8px; }
+  .stat-val{ font-size:22px; }
+  .nav-tab{ padding:5px 9px; font-size:11px; }
+  .schedule-grid{ grid-template-columns:72px repeat(7,1fr); font-size:10px; }
+  .sec-head{ flex-wrap:wrap; gap:8px; }
+  .bk-table th, .bk-table td{ padding:8px 7px; font-size:12px; }
+
+  /* Bottom nav */
+  .bottom-nav{ height:58px; }
+  .bnav-btn{ font-size:9px; }
+  .bnav-btn .bnav-icon{ font-size:18px; }
+  #booking-page footer{ padding-bottom:4.5rem; }
+  #booking-page .container.py-5{ padding-bottom:5rem !important; }
+}
+
+/* --- Very small screens (≤360px) --- */
+@media(max-width:360px){
+  .pin-dot{ width:42px; height:42px; font-size:18px; }
+  .key-btn{ height:50px; font-size:18px; }
+  .hero h1{ font-size:22px; }
+  .panel-title{ font-size:19px; }
+  .step-label{ font-size:7px; }
+}
+
+/* --- Ensure landing page is always full viewport --- */
+#landing-page{
+  min-height:100vh;
+  min-height:100dvh;
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:var(--cream)">
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="landing-page" style="display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;background:linear-gradient(160deg,#2D0A28 0%,#4A1942 35%,#8B2D6E 70%,#C0496E 100%);font-family:'Noto Sans Lao','Noto Sans Thai',sans-serif;overflow:hidden;position:relative;">
+
+  <!-- Floating petals bg -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">
+    <div style="position:absolute;top:8%;left:12%;font-size:60px;opacity:.07;transform:rotate(-20deg);animation:floatA 7s ease-in-out infinite">✿</div>
+    <div style="position:absolute;top:20%;right:8%;font-size:40px;opacity:.1;animation:floatB 5s ease-in-out infinite">🌸</div>
+    <div style="position:absolute;bottom:30%;left:5%;font-size:50px;opacity:.06;animation:floatA 9s ease-in-out infinite reverse">✿</div>
+    <div style="position:absolute;bottom:15%;right:15%;font-size:35px;opacity:.1;animation:floatB 6s ease-in-out infinite">✿</div>
+    <div style="position:absolute;top:50%;left:50%;font-size:80px;opacity:.04;transform:translate(-50%,-50%) rotate(15deg);animation:floatA 11s ease-in-out infinite">🌸</div>
+  </div>
+  <style>
+    @keyframes floatA{0%,100%{transform:translateY(0) rotate(-20deg)}50%{transform:translateY(-18px) rotate(-10deg)}}
+    @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+    @keyframes shimmer{0%,100%{opacity:.7}50%{opacity:1}}
+    .land-fade1{animation:fadeUp .7s ease .1s both}
+    .land-fade2{animation:fadeUp .7s ease .3s both}
+    .land-fade3{animation:fadeUp .7s ease .5s both}
+    .land-fade4{animation:fadeUp .7s ease .7s both}
+    .land-fade5{animation:fadeUp .7s ease .9s both}
+    .land-logo-anim{animation:scaleIn .8s cubic-bezier(.34,1.56,.64,1) both}
+    .btn-land-main{width:100%;padding:17px;border:none;border-radius:16px;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;box-shadow:0 6px 24px rgba(245,158,11,.4);transition:all .2s;-webkit-tap-highlight-color:transparent}
+    .btn-land-main:active{transform:scale(.97);opacity:.9}
+    .btn-land-out{width:100%;padding:15px;border:2px solid rgba(249,200,216,.4);border-radius:16px;background:transparent;color:#F9C8D8;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.04em;transition:all .2s;-webkit-tap-highlight-color:transparent;margin-top:.75rem}
+    .btn-land-out:active{background:rgba(249,200,216,.1)}
+    .service-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:7px 14px;font-size:12px;color:rgba(255,255,255,.9);backdrop-filter:blur(4px)}
+  </style>
+
+  <!-- TOP SECTION: Logo + brand -->
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(1.5rem,5vh,3rem) 1.5rem clamp(1rem,3vh,1.5rem);text-align:center">
+
+    <!-- Logo circle -->
+    <div class="land-logo-anim" style="width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12);border:2.5px solid rgba(249,200,216,.35);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;backdrop-filter:blur(8px);box-shadow:0 8px 32px rgba(0,0,0,.25)">
+      <svg width="60" height="60" viewBox="0 0 26 26" fill="none">
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95"/>
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(60 13 13)"/>
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(120 13 13)"/>
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(180 13 13)"/>
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(240 13 13)"/>
+        <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(300 13 13)"/>
+        <circle cx="13" cy="13" r="4" fill="rgba(255,255,255,.9)"/>
+        <circle cx="13" cy="13" r="2.5" fill="#F9C8D8"/>
+      </svg>
+    </div>
+
+    <!-- Brand name -->
+    <div class="land-fade1" style="font-size:clamp(22px,4vw,34px);font-weight:800;color:#fff;letter-spacing:.03em;line-height:1.2;margin-bottom:.3rem">Kop Beauty</div>
+    <div class="land-fade1" style="font-size:clamp(22px,4vw,34px);font-weight:800;color:#F9C8D8;letter-spacing:.03em;line-height:1.2;margin-bottom:.5rem">& Salon</div>
+    <div class="land-fade2" style="font-size:clamp(11px,1.5vw,14px);color:rgba(255,255,255,.65);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem">ວຽງຈັນ · Vientiane</div>
+
+    <!-- Tagline -->
+    <div class="land-fade2" style="font-size:clamp(13px,1.8vw,16px);color:rgba(255,255,255,.85);line-height:1.8;margin-bottom:1.5rem;max-width:320px">
+      ຍິນດີຕ້ອນຮັບ ✨<br>
+      ສ່ວຍ ງາມ ສຸກໃຈ ກັບທີມຊ່າງມືອາຊີບ<br>
+      <span style="color:#F9C8D8">ຈອງຄິວງ່າຍ ໃນ 1 ນາທີ</span>
+    </div>
+
+    <!-- Services pills -->
+    <div class="land-fade3" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.75rem">
+      <span class="service-pill">💅 ເລັບ</span>
+      <span class="service-pill">💆 ນວດ</span>
+      <span class="service-pill">🌿 Facial</span>
+      <span class="service-pill">✂️ ຕັດຜົມ</span>
+      <span class="service-pill">🎨 ສີຜົມ</span>
+    </div>
+
+    <!-- Stats row -->
+    <div class="land-fade3" style="display:flex;gap:1.5rem;margin-bottom:1.75rem">
+      <div style="text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#F9C8D8">500+</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6)">ລູກຄ້າ</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+      <div style="text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#F9C8D8">10+</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6)">ບໍລິການ</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+      <div style="text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#F9C8D8">4.9★</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6)">Rating</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM SECTION: CTA buttons -->
+  <div class="land-fade4" style="padding:0 1.5rem 2.5rem;max-width:420px;width:100%;margin:0 auto;box-sizing:border-box">
+    <button class="btn-land-main" onclick="goToLogin()">
+      🌸 ເຂົ້າສູ່ລະບົບ / ສະໝັກສະມາຊິກ
+    </button>
+    <button class="btn-land-out" onclick="goToLogin()">
+      ຮຽນຮູ້ເພີ່ມເຕີມ ›
+    </button>
+    <div class="land-fade5" style="text-align:center;margin-top:1.2rem;font-size:11px;color:rgba(255,255,255,.4)">
+      © 2026 Kop Beauty & Salon · ວຽງຈັນ
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-page">
+  <div class="petal-deco t">✿</div>
+  <div class="petal-deco b">✿</div>
+  <div class="auth-card">
+    <div class="lcard-head">
+      <div class="l-logo-wrap">
+        <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(60 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(120 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(180 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(240 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(300 13 13)"/>
+          <circle cx="13" cy="13" r="4" fill="rgba(255,255,255,.9)"/>
+          <circle cx="13" cy="13" r="2.5" fill="#F9C8D8"/>
+        </svg>
+      </div>
+      <div class="l-brand">Kop Beauty & Salon</div>
+      <div class="l-sub">MEMBER PORTAL</div>
+    </div>
+    <div class="lcard-body">
+      <div class="lalert" id="lalert"><span id="lalert-icon">❌</span><span id="lalert-msg"></span></div>
+      <div class="lfield">
+        <label>ເບີໂທລະສັບ / Tel</label>
+        <div class="lfield-wrap"><span class="lfield-icon">📱</span>
+          <input type="tel" id="l-phone" placeholder="020 XXXX XXXX" maxlength="15" oninput="lfmt(this)" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <div class="lfield">
+        <label>ລະຫັດຜ່ານ / password <span style="font-weight:300;color:#B07A95">(ຄັ້ງທຳອິດ: ຕັ້ງລະຫັດໃໝ່ໄດ້ເລີຍ)</span></label>
+        <div class="lfield-wrap">
+          <span class="lfield-icon">🔒</span>
+          <input type="password" id="l-pass" placeholder="ໃສ່ລະຫັດຜ່ານ" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:44px">
+          <button onclick="togglePass()" id="eye-btn" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;line-height:1">👁️</button>
+        </div>
+      </div>
+      <button class="btn-login" onclick="doLogin()">🌸 ເຂົ້າສູ່ລະບົບ</button>
+      <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="quickLoginAdmin()" style="flex:1;padding:9px 10px;border:1.5px dashed #C0496E;border-radius:10px;background:transparent;color:#C0496E;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans Thai',sans-serif;-webkit-tap-highlight-color:transparent">🛡️ Demo: Admin</button>
+        <button onclick="quickLogin('0201234567','1234')" style="flex:1;padding:9px 10px;border:1.5px dashed var(--cream-dark);border-radius:10px;background:transparent;color:#7A3565;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans Thai',sans-serif;-webkit-tap-highlight-color:transparent">👤 Demo: ລູກຄ້າ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OTP PAGE ===== -->
+<div id="otp-page" style="display:none;font-family:'Noto Sans Thai',sans-serif;min-height:100vh;min-height:100dvh;background:linear-gradient(135deg,#4A1942 0%,#8B2D6E 55%,#C0496E 100%);align-items:center;justify-content:center;padding:1rem;overflow-y:auto;position:relative;">
+  <div class="petal-deco t">✿</div>
+  <div class="petal-deco b">✿</div>
+  <div class="auth-card" style="max-width:400px;">
+    <div class="lcard-head">
+      <div class="l-logo-wrap">
+        <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(60 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".95" transform="rotate(120 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(180 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(240 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(300 13 13)"/>
+          <circle cx="13" cy="13" r="4" fill="rgba(255,255,255,.9)"/>
+          <circle cx="13" cy="13" r="2.5" fill="#F9C8D8"/>
+        </svg>
+      </div>
+      <div class="l-brand">Kop Beauty & Salon</div>
+      <div class="l-sub">ຢືນຢັນຕົວຕົນ OTP</div>
+    </div>
+    <div class="lcard-body">
+      <div style="text-align:center;margin-bottom:1rem">
+        <div style="font-size:40px;margin-bottom:.4rem">📲</div>
+        <div style="font-size:13px;font-weight:600;color:#3A0D34;margin-bottom:.3rem">ສົ່ງ OTP ໄປຍັງເບີໂທ</div>
+        <div style="font-size:14px;color:#C0496E;font-weight:700" id="otp-phone-display">020 XXXX XXXX</div>
+        <div style="font-size:11px;color:#B07A95;margin-top:.3rem">OTP ມີອາຍຸ <span id="otp-timer" style="color:#C0496E;font-weight:700">60</span> ວິນາທີ</div>
+      </div>
+      <div class="lalert" id="otp-alert"><span id="otp-alert-icon">❌</span><span id="otp-alert-msg"></span></div>
+
+      <!-- OTP dots display -->
+      <div class="pin-grid" style="margin-bottom:.6rem" id="otp-dots">
+        <div class="pin-dot" id="od0">-</div>
+        <div class="pin-dot" id="od1">-</div>
+        <div class="pin-dot" id="od2">-</div>
+        <div class="pin-dot" id="od3">-</div>
+      </div>
+
+      <!-- Hint box -->
+      <div style="background:linear-gradient(135deg,#FFF5F8,#FFE4ED);border:1px dashed var(--gold-light);border-radius:10px;padding:.6rem 1rem;margin-bottom:.8rem;text-align:center">
+        <div style="font-size:11px;color:#7A3565">🔔 OTP ຈຳລອງ (ສຳລັບທົດສອບ)</div>
+        <div style="font-size:20px;font-weight:700;color:#C0496E;letter-spacing:.3em;margin:.2rem 0" id="otp-hint-code">----</div>
+        <div style="font-size:10px;color:#B07A95">ກົດຕົວເລກດ້ານລຸ່ມເພື່ອໃສ່ລະຫັດ</div>
+      </div>
+
+      <!-- Keypad -->
+      <div class="pin-keypad" id="otp-keypad">
+        <button class="key-btn" onclick="otpKey('1')">1</button>
+        <button class="key-btn" onclick="otpKey('2')">2</button>
+        <button class="key-btn" onclick="otpKey('3')">3</button>
+        <button class="key-btn" onclick="otpKey('4')">4</button>
+        <button class="key-btn" onclick="otpKey('5')">5</button>
+        <button class="key-btn" onclick="otpKey('6')">6</button>
+        <button class="key-btn" onclick="otpKey('7')">7</button>
+        <button class="key-btn" onclick="otpKey('8')">8</button>
+        <button class="key-btn" onclick="otpKey('9')">9</button>
+        <button class="key-btn" onclick="otpResend()" style="font-size:11px;color:var(--muted)">ສົ່ງໃໝ່</button>
+        <button class="key-btn" onclick="otpKey('0')">0</button>
+        <button class="key-btn del" onclick="otpDel()">⌫</button>
+      </div>
+      <button class="btn-outline-custom w-100 mt-2" onclick="showLoginFromOtp()" style="margin-top:.8rem;width:100%">← ກັບຄືນ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="admin-page">
+  <div class="admin-header">
+    <div class="admin-brand">Kop Beauty & Salon<small>ADMIN DASHBOARD</small></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="color:rgba(255,255,255,.7);font-size:12px">🛡️ ຜູ້ດູແລລະບົບ</div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;">🚪 ອອກ</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div style="background:linear-gradient(135deg,#3A0D34,#6B2860);padding:.6rem 1.5rem 0;overflow-x:auto;">
+    <div class="admin-nav" style="display:inline-flex;margin-bottom:0">
+      <button class="nav-tab active" onclick="showTab('dash')">📊 ພາບລວມ</button>
+      <button class="nav-tab" onclick="showTab('bookings')">📋 ການຈອງ</button>
+      <button class="nav-tab" onclick="showTab('services')">✂️ ບໍລິການ</button>
+      <button class="nav-tab" onclick="showTab('staff')">👩 ຊ່າງ</button>
+      <button class="nav-tab" onclick="showTab('customers')">👥 ລູກຄ້າ</button>
+      <button class="nav-tab" onclick="showTab('promo')">📣 ໂປຣໂມຊັ່ນ</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- TAB: DASHBOARD -->
+    <div id="tab-dash" class="admin-tab">
+      <div class="stat-grid">
+        <div class="stat-card pink"><div class="stat-val" id="st-total">0</div><div class="stat-label">ຍອດຈອງທັງໝົດ</div><div class="stat-icon">📋</div></div>
+        <div class="stat-card purple"><div class="stat-val" id="st-today">0</div><div class="stat-label">ຈອງວັນນີ້</div><div class="stat-icon">📅</div></div>
+        <div class="stat-card green"><div class="stat-val" id="st-income">0</div><div class="stat-label">ລາຍຮັບ (ກີບ)</div><div class="stat-icon">💰</div></div>
+        <div class="stat-card blue"><div class="stat-val" id="st-customers">0</div><div class="stat-label">ລູກຄ້າທັງໝົດ</div><div class="stat-icon">👥</div></div>
+      </div>
+
+      <!-- Popular services chart -->
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-title">📈 ຄວາມນິຍົມຂອງບໍລິການ</div></div>
+        <div class="sec-body">
+          <div class="chart-bar-wrap" id="svc-chart"></div>
+        </div>
+      </div>
+
+      <!-- Recent bookings -->
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-title">🕐 ການຈອງລ່າສຸດ</div></div>
+        <div class="sec-body" style="padding:0;overflow-x:auto">
+          <table class="bk-table" id="recent-bk-table">
+            <thead><tr><th>REF</th><th>ລູກຄ້າ</th><th>ບໍລິການ</th><th>ຊ່າງ</th><th>ວັນ & ເວລາ</th><th>ລາຄາ</th><th>ສະຖານະ</th></tr></thead>
+            <tbody id="recent-bk-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKINGS -->
+    <div id="tab-bookings" class="admin-tab" style="display:none">
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-title">📋 ຕາຕະລາງການຈອງທັງໝົດ</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select class="mini-input" id="bk-filter-status" onchange="renderBookingTable()" style="width:auto;padding:6px 10px;font-size:12px">
+              <option value="">ທຸກສະຖານະ</option>
+              <option value="pending">ລໍຖ້າ</option>
+              <option value="confirm">ຢືນຢັນ</option>
+              <option value="cancel">ຍົກເລີກ</option>
+            </select>
+          </div>
+        </div>
+        <div style="padding:0;overflow-x:auto">
+          <table class="bk-table" id="all-bk-table">
+            <thead><tr><th>REF</th><th>ລູກຄ້າ</th><th>ເບີ</th><th>ບໍລິການ</th><th>ຊ່າງ</th><th>ວັນ & ເວລາ</th><th>ລາຄາ</th><th>ສະຖານະ</th><th>ຈັດການ</th></tr></thead>
+            <tbody id="all-bk-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SERVICES -->
+    <div id="tab-services" class="admin-tab" style="display:none">
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-title">✂️ ຈັດການບໍລິການ</div>
+          <button class="btn-sm-pink" onclick="openAddService()">+ ເພີ່ມບໍລິການ</button>
+        </div>
+        <div class="sec-body" style="padding:0;overflow-x:auto">
+          <table class="bk-table" id="svc-table">
+            <thead><tr><th>ໄອຄອນ</th><th>ຊື່ບໍລິການ</th><th>ລາຍລະອຽດ</th><th>ລາຄາ (ກີບ)</th><th>ເວລາ (ນາທີ)</th><th>ຈັດການ</th></tr></thead>
+            <tbody id="svc-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Add/Edit service form -->
+      <div id="svc-form-card" class="sec-card" style="display:none">
+        <div class="sec-head"><div class="sec-title" id="svc-form-title">+ ເພີ່ມບໍລິການໃໝ່</div></div>
+        <div class="sec-body">
+          <div class="row g-3">
+            <div class="col-6 col-md-2"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ໄອຄອນ</label><input class="mini-input" id="sf-icon" placeholder="✂️" style="font-size:20px;text-align:center"></div>
+            <div class="col-6 col-md-4"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ຊື່ບໍລິການ *</label><input class="mini-input" id="sf-name" placeholder="ຕັດຜົມ"></div>
+            <div class="col-12 col-md-6"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ລາຍລະອຽດ</label><input class="mini-input" id="sf-desc" placeholder="ລາຍລະອຽດບໍລິການ"></div>
+            <div class="col-6 col-md-3"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ລາຄາ (ກີບ) *</label><input class="mini-input" id="sf-price" type="number" placeholder="50000"></div>
+            <div class="col-6 col-md-3"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ເວລາ (ນາທີ) *</label><input class="mini-input" id="sf-dur" type="number" placeholder="45"></div>
+            <div class="col-12" style="display:flex;gap:8px">
+              <button class="btn-sm-pink" onclick="saveService()">💾 ບັນທຶກ</button>
+              <button class="btn-sm-outline" onclick="closeServiceForm()">ຍົກເລີກ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: STAFF -->
+    <div id="tab-staff" class="admin-tab" style="display:none">
+      <!-- Staff list -->
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-title">👩 ຈັດການຊ່າງ</div>
+          <button class="btn-sm-pink" onclick="openAddStaff()">+ ເພີ່ມຊ່າງ</button>
+        </div>
+        <div class="sec-body" style="padding:0;overflow-x:auto">
+          <table class="bk-table" id="staff-table">
+            <thead><tr><th>ຊື່ຊ່າງ</th><th>ຊ່ຽວຊານ</th><th>ປະສົບການ</th><th>ສະຖານະ</th><th>ຈັດການ</th></tr></thead>
+            <tbody id="staff-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Add staff form -->
+      <div id="staff-form-card" class="sec-card" style="display:none">
+        <div class="sec-head"><div class="sec-title" id="staff-form-title">+ ເພີ່ມຊ່າງໃໝ່</div></div>
+        <div class="sec-body">
+          <div class="row g-3">
+            <div class="col-12 col-md-4"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ຊື່ຊ່າງ *</label><input class="mini-input" id="stf-name" placeholder="ນ້ອງນຸ່ນ"></div>
+            <div class="col-12 col-md-4"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ຊ່ຽວຊານ</label><input class="mini-input" id="stf-spec" placeholder="ຊ່າງຜົມ"></div>
+            <div class="col-6 col-md-2"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ປີ</label><input class="mini-input" id="stf-years" type="number" placeholder="5"></div>
+            <div class="col-6 col-md-2"><label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ໄອຄອນ</label><input class="mini-input" id="stf-icon" placeholder="👩" style="font-size:18px;text-align:center"></div>
+            <div class="col-12" style="display:flex;gap:8px">
+              <button class="btn-sm-pink" onclick="saveStaff()">💾 ບັນທຶກ</button>
+              <button class="btn-sm-outline" onclick="closeStaffForm()">ຍົກເລີກ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Work schedule -->
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-title">🗓️ ຕາຕະລາງເຮັດວຽກ (ກົດເພື່ອສະຫຼັບ)</div></div>
+        <div class="sec-body" style="padding:0;overflow-x:auto;padding-bottom:1rem">
+          <div class="schedule-grid" id="schedule-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CUSTOMERS -->
+    <div id="tab-customers" class="admin-tab" style="display:none">
+      <div class="sec-card">
+        <div class="sec-head">
+          <div class="sec-title">👥 ຂໍ້ມູນລູກຄ້າ</div>
+          <div style="font-size:12px;color:var(--muted)" id="cust-count">0 ຄົນ</div>
+        </div>
+        <div style="padding:0;overflow-x:auto">
+          <table class="bk-table" id="cust-table">
+            <thead><tr><th>ລູກຄ້າ</th><th>ເບີໂທ</th><th>ຈອງທັງໝົດ</th><th>ຄັ້ງຫຼ້າສຸດ</th><th>ລາຍຮັບ (ກີບ)</th></tr></thead>
+            <tbody id="cust-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Booking history modal-like -->
+      <div id="cust-history" class="sec-card" style="display:none">
+        <div class="sec-head">
+          <div class="sec-title" id="cust-history-title">ປະຫວັດການຈອງ</div>
+          <button class="btn-sm-outline" onclick="document.getElementById('cust-history').style.display='none'">✕ ປິດ</button>
+        </div>
+        <div style="padding:0;overflow-x:auto">
+          <table class="bk-table"><thead><tr><th>REF</th><th>ບໍລິການ</th><th>ຊ່າງ</th><th>ວັນ & ເວລາ</th><th>ລາຄາ</th><th>ສະຖານະ</th></tr></thead>
+          <tbody id="cust-history-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROMO -->
+    <div id="tab-promo" class="admin-tab" style="display:none">
+      <div class="sec-card">
+        <div class="sec-head"><div class="sec-title">📣 ສົ່ງໂປຣໂມຊັນ / ແຈ້ງເຕືອນທາງ WhatsApp</div></div>
+        <div class="sec-body">
+          <div class="promo-card mb-3">
+            <div class="promo-title">📱 ສົ່ງໃຫ້ລູກຄ້າທຸກຄົນ</div>
+            <textarea class="mini-input" id="promo-msg-all" rows="3" style="margin-bottom:8px" placeholder="ຂໍ້ຄວາມໂປຣໂມ ເຊັ່ນ: 🌸 ສ່ວນລົດ 20% ທຸກບໍລິການ ວັນທີ 20-25 ມີນາ!"></textarea>
+            <button class="btn-sm-pink" onclick="sendPromoAll()" style="background:linear-gradient(135deg,#25D366,#128C7E)">📤 ສົ່ງໃຫ້ທຸກຄົນ</button>
+          </div>
+          <div class="promo-card">
+            <div class="promo-title">👤 ສົ່ງໃຫ້ລູກຄ້າສະເພາະ</div>
+            <div class="row g-2 mb-2">
+              <div class="col-12 col-md-5">
+                <select class="mini-input" id="promo-cust-select">
+                  <option value="">ເລືອກລູກຄ້າ...</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-7">
+                <textarea class="mini-input" id="promo-msg-one" rows="2" placeholder="ຂໍ້ຄວາມ..."></textarea>
+              </div>
+            </div>
+            <button class="btn-sm-pink" onclick="sendPromoOne()" style="background:linear-gradient(135deg,#25D366,#128C7E)">📤 ສົ່ງ</button>
+          </div>
+          <!-- Log -->
+          <div style="margin-top:1.5rem">
+            <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:.5rem">📜 ປະຫວັດການສົ່ງ</div>
+            <div id="promo-log" style="font-size:12px;color:var(--charcoal);display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div>
+
+<!-- ===== BOOKING PAGE ===== -->
+<div id="booking-page">
+<header>
+  <div class="container-fluid h-100 d-flex align-items-center justify-content-between">
+    <div class="logo d-flex align-items-center gap-3">
+      <div class="logo-icon">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(60 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".9" transform="rotate(120 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#C0496E" opacity=".85" transform="rotate(180 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#C0496E" opacity=".85" transform="rotate(240 13 13)"/>
+          <ellipse cx="13" cy="6" rx="3" ry="5" fill="#C0496E" opacity=".85" transform="rotate(300 13 13)"/>
+          <circle cx="13" cy="13" r="4" fill="#fff"/><circle cx="13" cy="13" r="2.5" fill="#E8719A"/>
+        </svg>
+      </div>
+      <div class="logo-text">Kop Beauty<span>& Salon</span></div>
+    </div>
+    <div class="header-right">
+      <div class="header-user"><span>👤</span><span id="hdr-username">-</span>
+        <span id="hdr-role-badge" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:2px 8px;border-radius:10px;font-size:10px;letter-spacing:.08em"></span>
+      </div>
+      <a href="https://wa.me/8562058449200" target="_blank" class="d-none d-md-flex align-items-center gap-2 text-decoration-none" style="color:#fff;font-size:12px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20.52 3.48A11.95 11.95 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.18-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22c-1.85 0-3.66-.5-5.23-1.44l-.37-.22-3.87 1.02 1.03-3.77-.24-.39A9.94 9.94 0 0 1 2 12C2 6.48 6.48 2 12 2c2.67 0 5.18 1.04 7.07 2.93A9.94 9.94 0 0 1 22 12c0 5.52-4.48 10-10 10zm5.44-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51H6.9c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        020 5844 9200
+      </a>
+      <button class="btn-logout-top" onclick="doLogout()">🚪 ອອກ</button>
+    </div>
+  </div>
+</header>
+<div class="info-strip py-2">
+  <div class="container d-flex flex-wrap justify-content-center gap-4 py-1">
+    <div class="info-strip-item d-flex align-items-center gap-2">🕐 ເປີດ 09:00 – 19:00 ທຸກວັນ</div>
+    <div class="info-strip-item d-flex align-items-center gap-2">📍 ບ້ານ ອູບມຸງ, ເມືອງສີໂຄດຕະບອງ, ນະຄອນຫຼວງວຽງຈັນ</div>
+    <div class="info-strip-item d-flex align-items-center gap-2">✨ ບໍລິການໂດຍຊ່າງມືອາຊີບ ແລະ ໃຊ້ເຄື່ອງມືທີ່ມີຄຸນນະພາບ</div>
+  </div>
+</div>
+<section class="hero d-flex align-items-center justify-content-center text-center py-5">
+  <div class="hero-deco">✿</div>
+  <div class="hero-content">
+    <div class="hero-badge">ຈອງຄິວອອນລາຍ</div>
+    <h1>ສວຍງາມ<br><em>ບໍ່ຕ້ອງ ຫຍຸ້ງຍາກ</em></h1>
+    <p class="mx-auto">ໂດດເດັ່ນມີລະດັບ ສຳພັດກັບຊ່າງມືອາຊີບ<br>ສະດວກ ວ່ອງໄວ ເພີ່ມຄວາມໝັ້ນໃຈໃຫ້ທ່ານ</p>
+  </div>
+</section>
+<div class="container py-5" style="max-width:860px">
+  <div class="row justify-content-center mb-5">
+    <div class="col-12" style="max-width:560px">
+      <div class="d-grid" style="grid-template-columns:repeat(5,1fr)" id="steps-bar">
+        <div class="step-item active" id="si1"><div class="step-num" id="sn1">1</div><div class="step-label">ບໍລິການ</div></div>
+        <div class="step-item" id="si2"><div class="step-num" id="sn2">2</div><div class="step-label">ຊ່າງ</div></div>
+        <div class="step-item" id="si3"><div class="step-num" id="sn3">3</div><div class="step-label">ວັນທີ</div></div>
+        <div class="step-item" id="si4"><div class="step-num" id="sn4">4</div><div class="step-label">ເວລາ</div></div>
+        <div class="step-item" id="si5"><div class="step-num" id="sn5">5</div><div class="step-label">ຂໍ້ມູນ</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel active" id="p1">
+    <div class="panel-title">ເລືອກບໍລິການ</div>
+    <div class="panel-sub">ເລືອກບໍລິການທີ່ທ່ານຕ້ອງການ</div>
+    <div class="row g-3 mb-4" id="service-grid-bk"></div>
+    <div class="btn-row"><button class="btn-primary-custom" id="btn1" onclick="goStep(2)" disabled>ຕໍ່ໄປ →</button></div>
+  </div>
+  <div class="panel" id="p2">
+    <div class="panel-title">ເລືອກຊ່າງ</div>
+    <div class="panel-sub">ເລືອກຊ່າງທີ່ທ່ານຕ້ອງການ</div>
+    <div class="row g-3 mb-4" id="staff-grid-bk"></div>
+    <div class="btn-row"><button class="btn-outline-custom" onclick="goStep(1)">← ກັບຄືນ</button><button class="btn-primary-custom" id="btn2" onclick="goStep(3)" disabled>ຕໍ່ໄປ →</button></div>
+  </div>
+  <div class="panel" id="p3">
+    <div class="panel-title">ເລືອກວັນທີ</div>
+    <div class="panel-sub">ເລືອກວັນທີ່ສະດວກ</div>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <button class="cal-nav" onclick="prevMonth()">‹</button>
+      <div class="fw-500 fs-6" id="cal-month-label"></div>
+      <button class="cal-nav" onclick="nextMonth()">›</button>
+    </div>
+    <div class="row g-0 mb-2">
+      <div class="col day-label">ອາທິດ</div><div class="col day-label">ຈັນ</div><div class="col day-label">ອັງຄານ</div><div class="col day-label">ພຸດ</div><div class="col day-label">ພະຫັດ</div><div class="col day-label">ສ</div><div class="col day-label">ເສົາ</div>
+    </div>
+    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:2rem"></div>
+    <div class="btn-row"><button class="btn-outline-custom" onclick="goStep(2)">← ກັບຄືນ</button><button class="btn-primary-custom" id="btn3" onclick="goStep(4)" disabled>ຕໍ່ໄປ →</button></div>
+  </div>
+  <div class="panel" id="p4">
+    <div class="panel-title">ເລືອກເວລາ</div>
+    <div class="panel-sub">ເລືອກຊ່ວງເວລາທີ່ສະດວກ</div>
+    <div class="mb-4">
+      <div class="time-section-label">ຊ່ວງເຊົ້າ</div>
+      <div class="row g-2">
+        <div class="col-auto"><div class="time-slot busy">09:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'09:30')">09:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'10:00')">10:00</div></div>
+        <div class="col-auto"><div class="time-slot busy">10:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'11:00')">11:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'11:30')">11:30</div></div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="time-section-label">ຊ່ວງບ່າຍ</div>
+      <div class="row g-2">
+        <div class="col-auto"><div class="time-slot busy">13:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'13:30')">13:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'14:00')">14:00</div></div>
+        <div class="col-auto"><div class="time-slot busy">14:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'15:00')">15:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'15:30')">15:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'16:00')">16:00</div></div>
+        <div class="col-auto"><div class="time-slot busy">16:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'17:00')">17:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'17:30')">17:30</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'18:00')">18:00</div></div>
+        <div class="col-auto"><div class="time-slot" onclick="pickTime(this,'18:30')">18:30</div></div>
+      </div>
+    </div>
+    <p class="text-muted small mb-4">⚫ ສີເທົາ = ຈອງເຕັມ / ບໍ່ວ່າງ</p>
+    <div class="btn-row"><button class="btn-outline-custom" onclick="goStep(3)">← ກັບຄືນ</button><button class="btn-primary-custom" id="btn4" onclick="goStep(5)" disabled>ຕໍ່ໄປ →</button></div>
+  </div>
+  <div class="panel" id="p5">
+    <div class="panel-title">ຂໍ້ມູນຂອງທ່ານ</div>
+    <div class="panel-sub">ກອກຂໍ້ມູນ ເພື່ອໃຫ້ເຮົາຕິດຕໍ່ໄດ້</div>
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-md-6"><div class="form-group"><label class="mb-1">ຊື່ - ນາມສະກຸນ *</label><input type="text" id="f-name" placeholder="ເຊັ່ນ: ນາງ ສົມໃຈ ສຸກໃຈ" oninput="checkForm()"></div></div>
+      <div class="col-12 col-md-6"><div class="form-group"><label class="mb-1">ເບີໂທ *</label><input type="tel" id="f-phone" placeholder="020 XXXX XXXX" oninput="checkForm()"></div></div>
+      <div class="col-12 col-md-6"><div class="form-group"><label class="mb-1">WhatApp</label><input type="email" id="f-email" placeholder="020 XXXXXXXX"></div></div>
+      <div class="col-12 col-md-6"><div class="form-group"><label class="mb-1">ອາຍຸ</label><input type="number" id="f-age" placeholder="25" min="10" max="99"></div></div>
+      <div class="col-12"><div class="form-group"><label class="mb-1">ໝາຍເຫດ</label><textarea id="f-note" placeholder="ເຊັ່ນ: ແພ້ສານເຄມີ ..."></textarea></div></div>
+    </div>
+    <div class="btn-row"><button class="btn-outline-custom" onclick="goStep(4)">← ກັບຄືນ</button><button class="btn-gold" id="btn5" onclick="showSummary()" disabled>ກວດສອບ & ຢືນຢັນ ✓</button></div>
+  </div>
+  <div class="panel" id="p6">
+    <div class="panel-title">ສຳລັບການຈອງ</div>
+    <div class="panel-sub">ກວດສອບຂໍ້ມູນ ກ່ອນຢືນຢັນ</div>
+    <div class="summary-card">
+      <div class="summary-header"><div style="font-size:24px">📋</div><div><div class="summary-header-text">ສຳລັບການຈອງຄິວ</div><div class="summary-header-sub">Kop Beauty & Spa</div></div></div>
+      <div>
+        <div class="summary-row"><span class="summary-key">ບໍລິການ</span><span class="summary-val" id="s-service">-</span></div>
+        <div class="summary-row"><span class="summary-key">ຊ່າງ</span><span class="summary-val" id="s-staff">-</span></div>
+        <div class="summary-row"><span class="summary-key">ວັນທີ</span><span class="summary-val" id="s-date">-</span></div>
+        <div class="summary-row"><span class="summary-key">ເວລາ</span><span class="summary-val" id="s-time">-</span></div>
+        <div class="summary-row"><span class="summary-key">ໄລຍະ</span><span class="summary-val" id="s-dur">-</span></div>
+        <div class="summary-row"><span class="summary-key">ຊື່</span><span class="summary-val" id="s-name">-</span></div>
+        <div class="summary-row"><span class="summary-key">ເບີໂທ</span><span class="summary-val" id="s-phone">-</span></div>
+      </div>
+      <div class="price-total"><span class="price-label">ລາຄາເລີ່ມຕົ້ນ</span><span class="price-value" id="s-price">-</span></div>
+    </div>
+    <div class="btn-row"><button class="btn-outline-custom" onclick="goStep(5)">← ແກ້ໄຂ</button><button class="btn-gold" onclick="confirmBooking()">ຢືນຢັນຈອງຄິວ 🌸</button></div>
+  </div>
+  <!-- LOADING OVERLAY -->
+  <div id="booking-loading" style="display:none;position:fixed;inset:0;background:rgba(74,25,66,.6);backdrop-filter:blur(4px);z-index:9999;flex-direction:column;gap:1.2rem;">
+    <div style="position:relative;width:84px;height:84px;">
+      <svg viewBox="0 0 84 84" style="animation:spinLoad 1.1s linear infinite;width:84px;height:84px;" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="42" cy="42" r="36" fill="none" stroke="rgba(249,200,216,.2)" stroke-width="6"/>
+        <path d="M42 6 A36 36 0 0 1 78 42" fill="none" stroke="#E8719A" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;">🌸</div>
+    </div>
+    <div style="color:#fff;font-family:'Noto Sans Lao',sans-serif;font-size:16px;font-weight:600;letter-spacing:.04em;text-shadow:0 1px 8px rgba(0,0,0,.3)" id="loading-msg">ກຳລັງບັນທຶກການຈອງ...</div>
+    <div style="color:rgba(255,255,255,.65);font-size:13px;font-family:'Noto Sans Lao',sans-serif;" id="loading-sub">ກະລຸນາລໍຖ້າສັກຄູ່ 🙏</div>
+  </div>
+  <style>@keyframes spinLoad{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+
+  <div class="panel" id="p7">
+    <div class="success-wrap">
+      <div class="success-circle" style="animation:popIn .6s cubic-bezier(.34,1.56,.64,1) .1s both">✅</div>
+      <div class="success-title" style="margin-bottom:.25rem">ຈອງຄິວສຳເລັດ!</div>
+      <div class="success-sub" style="font-size:15px;color:#4A1942;font-weight:600;margin-bottom:.6rem">ຊຳລະເງິນຮຽບຮ້ອຍແລ້ວ 💸</div>
+      <div style="font-size:13px;color:#7A3565;margin-bottom:1.5rem;line-height:1.75">
+        ທ່ານໄດ້ທຳການຈອງຄິວ ແລະ ຊຳລະເງິນຮຽບຮ້ອຍແລ້ວ<br>
+        ພວກເຮົາຈະກຽມທີມງານໃຫ້ພ້ອມຮັບໃຊ້ທ່ານ ✨
+      </div>
+      <div class="booking-ref" id="ref-num">BK-00000</div>
+      <div class="success-detail">
+        <div class="summary-row"><span class="summary-key">ບໍລິການ</span><span class="summary-val" id="d-service">-</span></div>
+        <div class="summary-row"><span class="summary-key">ຊ່າງ</span><span class="summary-val" id="d-staff">-</span></div>
+        <div class="summary-row"><span class="summary-key">ວັນ & ເວລາ</span><span class="summary-val" id="d-dt">-</span></div>
+        <div class="summary-row"><span class="summary-key">ລາຄາ</span><span class="summary-val" id="d-price" style="color:var(--gold-dark);font-weight:700">-</span></div>
+        <div style="padding:12px 1.5rem;background:var(--cream);border-top:1px solid var(--cream-dark);text-align:center">
+          <span style="font-size:12px;color:#065F46;font-weight:600;background:#D1FAE5;padding:5px 18px;border-radius:20px;border:1px solid #A7F3D0">✅ ຊຳລະເງິນຮຽບຮ້ອຍ</span>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,#FFF5F8,#FFE4ED);border:1px solid var(--gold-light);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.5rem;text-align:left">
+        <div style="font-size:12px;font-weight:700;color:#C0496E;margin-bottom:.5rem">📌 ໝາຍເຫດສຳຄັນ</div>
+        <div style="font-size:12px;color:#6B2860;line-height:1.8">
+          • ກະລຸນາມາຮອດຮ້ານ <strong>ກ່ອນ 10 ນາທີ</strong><br>
+          • ຖ້າຕ້ອງການຍົກເລີກ ກະລຸນາແຈ້ງກ່ອນ <strong>24 ຊົ່ວໂມງ</strong><br>
+          • ສອບຖາມເພີ່ມເຕີມ: <strong>020 5844 9200</strong>
+        </div>
+      </div>
+      <button class="btn-gold w-100" onclick="resetAll()" style="font-size:15px;padding:15px">🌸 ຈອງຄິວໃໝ່</button>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+    <svg width="22" height="22" viewBox="0 0 26 26" fill="none">
+      <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".9"/><ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".9" transform="rotate(60 13 13)"/>
+      <ellipse cx="13" cy="6" rx="3" ry="5" fill="#F9C8D8" opacity=".9" transform="rotate(120 13 13)"/><ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".85" transform="rotate(180 13 13)"/>
+      <ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".85" transform="rotate(240 13 13)"/><ellipse cx="13" cy="6" rx="3" ry="5" fill="#E8719A" opacity=".85" transform="rotate(300 13 13)"/>
+      <circle cx="13" cy="13" r="4" fill="#fff" opacity=".9"/><circle cx="13" cy="13" r="2.5" fill="#F9C8D8"/>
+    </svg>
+    <div class="footer-logo">Kop Beauty & Salon</div>
+  </div>
+  <p class="mb-1" style="font-size:12px;color:rgba(255,255,255,.65);font-weight:300">ບ້ານ ອູບມຸງ, ເມືອງສີໂຄດຕະບອງ, ນະຄອນຫຼວງວຽງຈັນ | 020 58449200</p>
+  <p style="font-size:12px;color:rgba(255,255,255,.55);font-weight:300">© 2026 Kop Beauty & Spa.</p>
+</footer>
+
+<!-- ===== ໜ້າ: ການຈອງຂອງຂ້ອຍ ===== -->
+<div class="cust-page" id="page-mybooking">
+  <div class="cust-page-head">
+    <div class="cust-page-title">📋 ການຈອງຂອງຂ້ອຍ</div>
+    <div class="cust-page-sub" id="mybk-sub">ປະຫວັດການຈອງທຸກຄັ້ງ</div>
+  </div>
+  <div style="padding:1rem" id="mybk-list"></div>
+</div>
+
+<!-- ===== ໜ້າ: ແຜນທີ່ຮ້ານ ===== -->
+<div class="cust-page" id="page-map">
+  <div class="cust-page-head">
+    <div class="cust-page-title">📍 ທີ່ຕັ້ງຮ້ານ</div>
+    <div class="cust-page-sub">ບ້ານ ອູບມຸງ, ເມືອງສີໂຄດຕະບອງ, ນະຄອນຫຼວງວຽງຈັນ</div>
+  </div>
+  <div style="padding:1rem">
+    <!-- Google Maps embed Vientiane -->
+    <iframe class="map-frame"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60773.93506278578!2d102.5503!3d17.9667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3124686e6bb0f283%3A0x9f3bd1f45be7f0b9!2sVientiane%2C%20Laos!5e0!3m2!1sen!2s!4v1234567890"
+      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    <div class="info-block" style="margin-top:12px">
+      <div class="info-block-title">ຂໍ້ມູນຮ້ານ</div>
+      <div class="info-row-item"><div class="info-row-icon">📍</div><div><div style="font-weight:600;font-size:13px">ທີ່ຢູ່</div><div style="font-size:12px;color:var(--muted)">ບ້ານໜອງປາໃນ, ເມືອງຈັນທະບູລີ, ວຽງຈັນ</div></div></div>
+      <div class="info-row-item"><div class="info-row-icon">🕐</div><div><div style="font-weight:600;font-size:13px">ເວລາເປີດ-ປິດ</div><div style="font-size:12px;color:var(--muted)">09:00 – 19:00 ທຸກວັນ</div></div></div>
+      <div class="info-row-item"><div class="info-row-icon">📞</div><div><div style="font-weight:600;font-size:13px">ເບີໂທ</div><a href="tel:02058449200" style="font-size:12px;color:var(--gold-dark)">020 5844 9200</a></div></div>
+      <div class="info-row-item"><div class="info-row-icon">💬</div><div><div style="font-weight:600;font-size:13px">WhatsApp</div><a href="https://wa.me/8562058449200" target="_blank" style="font-size:12px;color:#25D366">ສົ່ງຂໍ້ຄວາມ WhatsApp</a></div></div>
+    </div>
+    <a href="https://maps.google.com/?q=Vientiane,Laos" target="_blank"
+      style="display:block;text-align:center;background:linear-gradient(135deg,#4A1942,#C0496E);color:#fff;padding:13px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:1rem">
+      🗺️ ເປີດໃນ Google Maps
+    </a>
+  </div>
+</div>
+
+<!-- ===== ໜ້າ: ໂປຣໄຟລ໌ & ອອກ ===== -->
+<div class="cust-page" id="page-profile">
+  <div class="cust-page-head">
+    <div class="cust-page-title">👤 ໂປຣໄຟລ໌</div>
+    <div class="cust-page-sub" id="profile-sub">ຂໍ້ມູນຂອງທ່ານ</div>
+  </div>
+  <div style="padding:1rem">
+    <!-- Profile card -->
+    <div class="info-block">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:.8rem">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0">👤</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--charcoal)" id="profile-name">-</div>
+          <div style="font-size:12px;color:var(--muted)" id="profile-phone">-</div>
+        </div>
+      </div>
+      <div class="info-row-item"><div class="info-row-icon">📋</div><div><div style="font-size:12px;color:var(--muted)">ຈອງທັງໝົດ</div><div style="font-weight:700;color:var(--charcoal)" id="profile-bk-count">0 ຄັ້ງ</div></div></div>
+      <div class="info-row-item"><div class="info-row-icon">💰</div><div><div style="font-size:12px;color:var(--muted)">ໃຊ້ຈ່າຍທັງໝົດ</div><div style="font-weight:700;color:var(--gold-dark)" id="profile-income">0 ກີບ</div></div></div>
+    </div>
+
+    <!-- History quick view -->
+    <div class="info-block">
+      <div class="info-block-title">🕐 ການຈອງລ່າສຸດ</div>
+      <div id="profile-recent"></div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button onclick="showCustPage('mybooking')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--cream-dark);border-radius:12px;background:#fff;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;width:100%;-webkit-tap-highlight-color:transparent">
+        <span style="font-size:20px">📋</span><span style="font-size:14px;font-weight:500;color:var(--charcoal)">ເບີ່ງການຈອງທັງໝົດ</span><span style="margin-left:auto;color:var(--muted)">›</span>
+      </button>
+      <button onclick="showCustPage('map')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--cream-dark);border-radius:12px;background:#fff;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;width:100%;-webkit-tap-highlight-color:transparent">
+        <span style="font-size:20px">📍</span><span style="font-size:14px;font-weight:500;color:var(--charcoal)">ແຜນທີ່ຮ້ານ</span><span style="margin-left:auto;color:var(--muted)">›</span>
+      </button>
+      <button onclick="doLogout()" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid #FFCDD5;border-radius:12px;background:#FFF0F3;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;width:100%;-webkit-tap-highlight-color:transparent">
+        <span style="font-size:20px">🚪</span><span style="font-size:14px;font-weight:600;color:#C0496E">ອອກຈາກລະບົບ</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bnav-btn active" id="bnav-home" onclick="showCustPage('home')">
+    <span class="bnav-icon">🌸</span>ຈອງຄິວ
+  </button>
+  <button class="bnav-btn" id="bnav-mybooking" onclick="showCustPage('mybooking')">
+    <span class="bnav-icon">📋</span>ການຈອງ
+  </button>
+  <button class="bnav-btn" id="bnav-map" onclick="showCustPage('map')">
+    <span class="bnav-icon">📍</span>ແຜນທີ່
+  </button>
+  <button class="bnav-btn" id="bnav-profile" onclick="showCustPage('profile')">
+    <span class="bnav-icon">👤</span>ໂປຣໄຟລ໌
+  </button>
+</nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ============================================================
+   IN-MEMORY DATA STORE (ใช้แทน localStorage เพื่อรันใน preview ได้)
+   ============================================================ */
+const ADMIN_PHONE = '0209999999';
+var DB = {
+  users: [
+    {name:'ນ້ອງສົມໃຈ', phone:'0201234567', pin:'1234', role:'customer'},
+    {name:'ທ້າວ ວິໄລ', phone:'0202223334', pin:'5678', role:'customer'},
+    {name:'ນາງ ຄຳຜອງ', phone:'0203334445', pin:'9012', role:'customer'}
+  ],
+  services: [
+    {id:1, icon:'✂️', name:'ຕັດຜົມ', desc:'ຫຼາຍຊົງ ຫຼາຍStyle', price:50000, dur:45},
+    {id:2, icon:'🎨', name:'ຍ້ອມຜົມ', desc:'ຍ້ອມສີ ສີງາມທົນທ່ານ', price:200000, dur:120},
+    {id:3, icon:'💫', name:'ດັດຜົມ', desc:'ດັດລອນ / ດັດ Straight', price:300000, dur:180},
+    {id:4, icon:'🌿', name:'ນວດ & ບຳລຸງຜົມ', desc:'ດູແລ ເສັ້ນຜົມ', price:80000, dur:60},
+    {id:5, icon:'💅', name:'ເຮັດເລັບ', desc:'ເລັບເຈວ / ເລັບທຳມະດາ', price:120000, dur:90},
+    {id:6, icon:'💄', name:'ແຕ່ງໜ້າ', desc:'ສຳລັບທຸກໂອກາດ', price:150000, dur:60}
+  ],
+  staff: [
+    {id:1, icon:'👩', name:'ນ້ອງນຸ່ນ', spec:'ຊ່າງຜົມ ຊ່ຽວຊານ', years:8, active:true},
+    {id:2, icon:'👱‍♀️', name:'ນ້ອງໝີ', spec:'ຜູ້ຊ່ຽວຊານຍ້ອມສີ', years:5, active:true},
+    {id:3, icon:'🧑‍🦱', name:'ນ້ອງແກ້ວ', spec:'Stylist & ດັດຜົມ', years:6, active:true},
+    {id:4, icon:'👩‍🦳', name:'ນ້ອງດາວ', spec:'ແຕ່ງໜ້າ & ເລັບ', years:4, active:true}
+  ],
+  bookings: [
+    {ref:'BK-10001', custName:'ນ້ອງສົມໃຈ', custPhone:'0201234567', service:'ຕັດຜົມ', staff:'ນ້ອງນຸ່ນ', date:'22 ມີນາ 2026', time:'10:00 ໂມງ', price:'50,000', status:'confirm'},
+    {ref:'BK-10002', custName:'ທ້າວ ວິໄລ', custPhone:'0202223334', service:'ຍ້ອມຜົມ', staff:'ນ້ອງໝີ', date:'22 ມີນາ 2026', time:'13:30 ໂມງ', price:'200,000', status:'pending'},
+    {ref:'BK-10003', custName:'ນາງ ຄຳຜອງ', custPhone:'0203334445', service:'ດັດຜົມ', staff:'ນ້ອງແກ້ວ', date:'23 ມີນາ 2026', time:'09:30 ໂມງ', price:'300,000', status:'pending'},
+    {ref:'BK-10004', custName:'ນ້ອງສົມໃຈ', custPhone:'0201234567', service:'ເຮັດເລັບ', staff:'ນ້ອງດາວ', date:'20 ມີນາ 2026', time:'14:00 ໂມງ', price:'120,000', status:'confirm'},
+    {ref:'BK-10005', custName:'ທ້າວ ວິໄລ', custPhone:'0202223334', service:'ແຕ່ງໜ້າ', staff:'ນ້ອງດາວ', date:'18 ມີນາ 2026', time:'11:00 ໂມງ', price:'150,000', status:'cancel'},
+    {ref:'BK-10006', custName:'ນ້ອງສົມໃຈ', custPhone:'0201234567', service:'ຍ້ອມຜົມ', staff:'ນ້ອງໝີ', date:'25 ມີນາ 2026', time:'10:00 ໂມງ', price:'200,000', status:'pending'}
+  ],
+  schedule: {}, // staffId_day -> true/false
+  promoLog: [],
+  nextSvcId: 7,
+  nextStaffId: 5,
+  nextRef: 10006
+};
+// default schedule
+var days = ['ອາທິດ','ຈັນ','ອັງຄານ','ພຸດ','ພະຫັດ','ສຸກ','ເສົາ'];
+DB.staff.forEach(function(s){
+  days.forEach(function(d,i){
+    DB.schedule[s.id+'_'+i] = (i>0 && i<6); // Mon-Fri work by default
+  });
+});
+
+var currentSession = null;
+/* ============================================================
+   AUTH
+   ============================================================ */
+function lfmt(el){
+  var v=el.value.replace(/\D/g,'');
+  if(v.length>3&&v.length<=7) v=v.slice(0,3)+' '+v.slice(3);
+  else if(v.length>7) v=v.slice(0,3)+' '+v.slice(3,7)+' '+v.slice(7,11);
+  el.value=v;
+}
+function togglePass(){
+  var inp=document.getElementById('l-pass');
+  inp.type=inp.type==='password'?'text':'password';
+}
+function getPass(){ return document.getElementById('l-pass').value; }
+
+function showLAlert(type,msg){
+  var b=document.getElementById('lalert');
+  b.className='lalert show lalert-'+type;
+  document.getElementById('lalert-icon').textContent=type==='error'?'❌':'ℹ️';
+  document.getElementById('lalert-msg').textContent=msg;
+}
+function hideLAlert(){document.getElementById('lalert').className='lalert';}
+
+/* ============================================================
+   OTP SYSTEM
+   ============================================================ */
+var otpCode = '';
+var otpGenerated = '';
+var otpTimerInterval = null;
+var pendingLoginData = null;
+
+function generateOTP(){
+  return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function showOTPPage(phoneDigits, pass){
+  pendingLoginData = {phone: phoneDigits, pass: pass};
+  otpGenerated = generateOTP();
+  otpCode = '';
+  // Format phone for display
+  var pd = phoneDigits;
+  var fmtPhone = pd.slice(0,3)+' '+pd.slice(3,7)+' '+pd.slice(7);
+  document.getElementById('otp-phone-display').textContent = fmtPhone;
+  document.getElementById('otp-hint-code').textContent = otpGenerated;
+  updateOTPDots();
+  var al = document.getElementById('otp-alert');
+  al.className = 'lalert';
+  // Timer
+  var secs = 60;
+  document.getElementById('otp-timer').textContent = secs;
+  clearInterval(otpTimerInterval);
+  otpTimerInterval = setInterval(function(){
+    secs--;
+    document.getElementById('otp-timer').textContent = secs;
+    if(secs <= 0){ clearInterval(otpTimerInterval); }
+  }, 1000);
+  // Switch pages
+  document.getElementById('login-page').classList.remove('active');
+  document.getElementById('otp-page').classList.add('active');
+}
+
+function updateOTPDots(){
+  for(var i=0;i<4;i++){
+    var d = document.getElementById('od'+i);
+    if(i < otpCode.length){
+      d.textContent = otpCode[i];
+      d.classList.add('filled');
+    } else {
+      d.textContent = '-';
+      d.classList.remove('filled');
+    }
+  }
+}
+
+function otpKey(n){
+  if(otpCode.length >= 4) return;
+  otpCode += n;
+  updateOTPDots();
+  if(otpCode.length === 4) setTimeout(verifyOTP, 250);
+}
+function otpDel(){
+  otpCode = otpCode.slice(0,-1);
+  updateOTPDots();
+}
+function otpResend(){
+  otpGenerated = generateOTP();
+  otpCode = '';
+  document.getElementById('otp-hint-code').textContent = otpGenerated;
+  updateOTPDots();
+  var al = document.getElementById('otp-alert');
+  al.className = 'lalert show lalert-info';
+  document.getElementById('otp-alert-icon').textContent = 'ℹ️';
+  document.getElementById('otp-alert-msg').textContent = 'ສົ່ງ OTP ໃໝ່ແລ້ວ!';
+  var secs = 60;
+  document.getElementById('otp-timer').textContent = secs;
+  clearInterval(otpTimerInterval);
+  otpTimerInterval = setInterval(function(){
+    secs--;
+    document.getElementById('otp-timer').textContent = secs;
+    if(secs <= 0){ clearInterval(otpTimerInterval); }
+  }, 1000);
+}
+function verifyOTP(){
+  if(otpCode !== otpGenerated){
+    var al = document.getElementById('otp-alert');
+    al.className = 'lalert show lalert-error';
+    document.getElementById('otp-alert-icon').textContent = '❌';
+    document.getElementById('otp-alert-msg').textContent = 'OTP ບໍ່ຖືກຕ້ອງ ກະລຸນາລອງໃໝ່';
+    otpCode = '';
+    updateOTPDots();
+    return;
+  }
+  clearInterval(otpTimerInterval);
+  document.getElementById('otp-page').classList.remove('active');
+  // Proceed with login
+  var phone = pendingLoginData.phone;
+  var pass = pendingLoginData.pass;
+  var adminPhoneDigits = ADMIN_PHONE.replace(/\D/g,'');
+  if(phone === adminPhoneDigits){
+    currentSession={name:'ຜູ້ດູແລລະບົບ',phone:ADMIN_PHONE,role:'admin'};
+    showAdminDash();return;
+  }
+  var user=DB.users.find(u=>u.phone.replace(/\D/g,'')===phone);
+  if(!user){
+    var newUser={name:'ສະມາຊິກ '+phone.slice(-4),phone:phone,pin:pass,role:'customer'};
+    DB.users.push(newUser);currentSession=newUser;
+    showBookingPage(newUser,true);return;
+  }
+  user.role='customer';currentSession=user;showBookingPage(user,false);
+}
+function showLoginFromOtp(){
+  clearInterval(otpTimerInterval);
+  document.getElementById('otp-page').classList.remove('active');
+  document.getElementById('login-page').classList.add('active');
+}
+
+function doLogin(){
+  hideLAlert();
+  var phone=document.getElementById('l-phone').value.replace(/\D/g,'');
+  var pass=getPass().trim();
+  if(!phone){showLAlert('error','ກະລຸນາໃສ່ເບີໂທລະສັບ');return;}
+  if(!pass){showLAlert('error','ກະລຸນາໃສ່ລະຫັດຜ່ານ');return;}
+
+  // Admin check — compare digits only
+  var adminPhoneDigits = ADMIN_PHONE.replace(/\D/g,'');
+  if(phone === adminPhoneDigits){
+    if(pass !== '0000'){showLAlert('error','ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ');document.getElementById('l-pass').value='';return;}
+    showOTPPage(phone, pass);return;
+  }
+  var user=DB.users.find(u=>u.phone.replace(/\D/g,'')===phone);
+  if(!user){
+    // New user — go OTP then register
+    showOTPPage(phone, pass);return;
+  }
+  if(user.pin!==pass){showLAlert('error','ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ');document.getElementById('l-pass').value='';return;}
+  showOTPPage(phone, pass);
+}
+
+function showAdminDash(){
+  document.getElementById('login-page').classList.remove('active');
+  document.getElementById('booking-page').style.display='none';
+  document.getElementById('admin-page').style.display='block';
+  document.body.style.background='#F8F0F5';
+  refreshAdminData();
+}
+
+function showBookingPage(user,isNew){
+  document.getElementById('login-page').classList.remove('active');
+  document.getElementById('admin-page').style.display='none';
+  document.getElementById('booking-page').style.display='block';
+  document.getElementById('bottom-nav').style.display='flex';
+  document.body.style.background='var(--cream)';
+  document.getElementById('hdr-username').textContent=user.name;
+  document.getElementById('hdr-role-badge').textContent='MEMBER';
+  renderBookingServices();renderBookingStaff();renderCalendar();
+  showCustPage('home');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(isNew)showToast('🌸 ສ້າງບັນຊີສຳເລັດ! ກະລຸນາຈຳລະຫັດຜ່ານໄວ້ດ້ວຍ!');
+}
+
+function doLogout(){
+  currentSession=null;
+  document.getElementById('l-phone').value='';
+  document.getElementById('l-pass').value='';
+  hideLAlert();
+  document.getElementById('admin-page').style.display='none';
+  document.getElementById('booking-page').style.display='none';
+  document.getElementById('login-page').classList.add('active');
+  document.body.style.background='';
+}
+
+function showCustPage(page){
+  document.querySelectorAll('.cust-page').forEach(el=>el.style.display='none');
+  ['home','mybooking','map','profile'].forEach(function(t){
+    var b=document.getElementById('bnav-'+t);
+    if(b)b.classList.remove('active');
+  });
+  var heroEl=document.querySelector('.hero');
+  var infoEl=document.querySelector('.info-strip');
+  var contEl=document.querySelector('.container.py-5');
+  var footEl=document.querySelector('footer');
+  var headEl=document.querySelector('header');
+  if(page==='home'){
+    document.getElementById('bnav-home').classList.add('active');
+    if(heroEl)heroEl.style.display='';
+    if(infoEl)infoEl.style.display='';
+    if(contEl)contEl.style.display='';
+    if(footEl)footEl.style.display='';
+    if(headEl)headEl.style.display='flex';
+  } else {
+    if(heroEl)heroEl.style.display='none';
+    if(infoEl)infoEl.style.display='none';
+    if(contEl)contEl.style.display='none';
+    if(footEl)footEl.style.display='none';
+    if(headEl)headEl.style.display='none';
+    var el=document.getElementById('page-'+page);
+    if(el)el.style.display='block';
+    var bnav=document.getElementById('bnav-'+page);
+    if(bnav)bnav.classList.add('active');
+    if(page==='mybooking')renderMyBookings();
+    if(page==='profile')renderProfile();
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderMyBookings(){
+  if(!currentSession)return;
+  var bks=DB.bookings.filter(function(b){return b.custPhone===currentSession.phone;});
+  document.getElementById('mybk-sub').textContent=bks.length+' ການຈອງ';
+  if(!bks.length){
+    document.getElementById('mybk-list').innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:48px;margin-bottom:1rem">📋</div><div style="font-size:14px;margin-bottom:1rem">ຍັງບໍ່ມີການຈອງ</div><button class="btn-gold" onclick="showCustPage(\'home\')" style="font-size:13px;padding:10px 20px;border-radius:10px">+ ຈອງຄິວໃໝ່</button></div>';
+    return;
+  }
+  var allBks=DB.bookings; // keep reference for index lookup
+  document.getElementById('mybk-list').innerHTML=bks.slice().reverse().map(function(b){
+    var idx=allBks.indexOf(b);
+    var cancelBtn=b.status==='pending'
+      ? `<button onclick="custCancelBooking(${idx})" style="margin-top:.6rem;width:100%;padding:10px;border:1.5px solid #FFCDD5;border-radius:10px;background:#FFF0F3;color:#C0496E;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;-webkit-tap-highlight-color:transparent">❌ ຍົກເລີກການຈອງນີ້</button>`
+      : '';
+    return`
+    <div class="bk-card">
+      <div class="bk-card-head">
+        <span class="bk-card-ref">${b.ref}</span>
+        <span class="badge-status badge-${b.status}">${b.status==='confirm'?'✅ ຢືນຢັນ':b.status==='cancel'?'❌ ຍົກເລີກ':'⏳ ລໍຖ້າ'}</span>
+      </div>
+      <div class="bk-card-body">
+        <div class="bk-card-row"><div class="bk-card-key">ບໍລິການ</div><div class="bk-card-val">${b.service}</div></div>
+        <div class="bk-card-row"><div class="bk-card-key">ຊ່າງ</div><div class="bk-card-val">${b.staff}</div></div>
+        <div class="bk-card-row"><div class="bk-card-key">ວັນທີ</div><div class="bk-card-val">${b.date}</div></div>
+        <div class="bk-card-row"><div class="bk-card-key">ເວລາ</div><div class="bk-card-val">${b.time}</div></div>
+        <div class="bk-card-row"><div class="bk-card-key">ລາຄາ</div><div class="bk-card-val" style="color:var(--gold-dark);font-weight:700">${b.price} ກີບ</div></div>
+        ${cancelBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function custCancelBooking(idx){
+  var b=DB.bookings[idx];
+  if(!b||b.status!=='pending')return;
+  if(!confirm('ຕ້ອງການຍົກເລີກການຈອງ '+b.ref+' ແທ້ບໍ?'))return;
+  DB.bookings[idx].status='cancel';
+  showToast('❌ ຍົກເລີກການຈອງ '+b.ref+' ແລ້ວ');
+  renderMyBookings();
+}
+
+function renderProfile(){
+  if(!currentSession)return;
+  document.getElementById('profile-name').textContent=currentSession.name;
+  document.getElementById('profile-phone').textContent=currentSession.phone;
+  document.getElementById('profile-sub').textContent=currentSession.name;
+  var bks=DB.bookings.filter(function(b){return b.custPhone===currentSession.phone;});
+  var income=bks.filter(function(b){return b.status==='confirm';}).reduce(function(s,b){return s+parseInt(b.price.replace(/,/g,''));},0);
+  document.getElementById('profile-bk-count').textContent=bks.length+' ຄັ້ງ';
+  document.getElementById('profile-income').textContent=income.toLocaleString()+' ກີບ';
+  var last=bks.slice(-2).reverse();
+  document.getElementById('profile-recent').innerHTML=last.length?last.map(function(b){return`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--cream-dark);font-size:13px">
+      <div><div style="font-weight:600">${b.service}</div><div style="font-size:11px;color:var(--muted)">${b.date}</div></div>
+      <span class="badge-status badge-${b.status}">${b.status==='confirm'?'✅':b.status==='cancel'?'❌':'⏳'}</span>
+    </div>`;}).join('')
+  :'<div style="color:var(--muted);font-size:13px">ຍັງບໍ່ມີປະຫວັດ</div>';
+}
+
+function quickLogin(phone,pin){
+  document.getElementById('l-phone').value=phone.slice(0,3)+' '+phone.slice(3,7)+' '+phone.slice(7);
+  document.getElementById('l-pass').value=pin;
+  setTimeout(doLogin,180);
+}
+function goToLogin(){
+  document.getElementById('landing-page').style.display='none';
+  document.getElementById('login-page').classList.add('active');
+}
+function showLoginFromOtp(){
+  clearInterval(otpTimerInterval);
+  document.getElementById('otp-page').classList.remove('active');
+  document.getElementById('login-page').classList.add('active');
+}
+function quickLoginAdmin(){
+  var ap=ADMIN_PHONE.replace(/\D/g,"");
+  document.getElementById("l-phone").value=ap.slice(0,3)+" "+ap.slice(3,7)+" "+ap.slice(7);
+  document.getElementById("l-pass").value="0000";
+  setTimeout(doLogin,180);
+}
+
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+var currentTab='dash';
+function showTab(t){
+  currentTab=t;
+  document.querySelectorAll('.admin-tab').forEach(el=>el.style.display='none');
+  document.getElementById('tab-'+t).style.display='block';
+  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active'));
+  event.target.classList.add('active');
+  if(t==='dash')refreshAdminData();
+  if(t==='bookings')renderBookingTable();
+  if(t==='services')renderSvcTable();
+  if(t==='staff'){renderStaffTable();renderSchedule();}
+  if(t==='customers')renderCustomers();
+  if(t==='promo')renderPromoCustomers();
+}
+
+function refreshAdminData(){
+  document.getElementById('st-total').textContent=DB.bookings.length;
+  var today=new Date().toLocaleDateString('lo-LA');
+  document.getElementById('st-today').textContent=DB.bookings.filter(b=>b.status!=='cancel').length;
+  var income=DB.bookings.filter(b=>b.status==='confirm').reduce((s,b)=>s+parseInt(b.price.replace(/,/g,'')),0);
+  document.getElementById('st-income').textContent=income.toLocaleString();
+  document.getElementById('st-customers').textContent=DB.users.length;
+  renderRecentBookings();
+  renderSvcChart();
+}
+
+function renderRecentBookings(){
+  var tb=document.getElementById('recent-bk-body');
+  tb.innerHTML=DB.bookings.slice(-5).reverse().map(b=>`
+    <tr>
+      <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">${b.ref}</span></td>
+      <td>${b.custName}</td><td>${b.service}</td><td>${b.staff}</td>
+      <td style="font-size:12px">${b.date} ${b.time}</td>
+      <td style="color:var(--gold-dark);font-weight:600">${b.price}</td>
+      <td><span class="badge-status badge-${b.status}">${b.status==='confirm'?'✅ ຢືນຢັນ':b.status==='cancel'?'❌ ຍົກເລີກ':'⏳ ລໍຖ້າ'}</span></td>
+    </tr>`).join('');
+}
+
+function renderSvcChart(){
+  var counts={};
+  DB.bookings.forEach(b=>{counts[b.service]=(counts[b.service]||0)+1;});
+  var max=Math.max(...Object.values(counts),1);
+  var html=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([name,cnt])=>`
+    <div class="chart-row">
+      <div class="chart-label">${name}</div>
+      <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${(cnt/max*100).toFixed(0)}%"></div></div>
+      <div class="chart-val">${cnt} ຄັ້ງ</div>
+    </div>`).join('');
+  document.getElementById('svc-chart').innerHTML=html||'<div style="color:var(--muted);font-size:13px">ຍັງບໍ່ມີຂໍ້ມູນ</div>';
+}
+
+function renderBookingTable(){
+  var filter=document.getElementById('bk-filter-status').value;
+  var list=filter?DB.bookings.filter(b=>b.status===filter):DB.bookings;
+  document.getElementById('all-bk-body').innerHTML=list.map((b,i)=>`
+    <tr>
+      <td><span style="font-family:monospace;font-size:11px;color:var(--muted)">${b.ref}</span></td>
+      <td>${b.custName}</td><td style="font-size:12px">${b.custPhone}</td>
+      <td>${b.service}</td><td>${b.staff}</td>
+      <td style="font-size:12px">${b.date}<br>${b.time}</td>
+      <td style="color:var(--gold-dark);font-weight:600">${b.price}</td>
+      <td><span class="badge-status badge-${b.status}">${b.status==='confirm'?'✅ ຢືນຢັນ':b.status==='cancel'?'❌ ຍົກເລີກ':'⏳ ລໍຖ້າ'}</span></td>
+      <td>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${b.status==='pending'?`<button class="btn-sm-pink" onclick="setStatus(${DB.bookings.indexOf(b)},'confirm')" style="font-size:11px;padding:4px 8px">✅ ຢືນຢັນ</button>`:''}
+          ${b.status!=='cancel'?`<button class="btn-sm-danger" onclick="setStatus(${DB.bookings.indexOf(b)},'cancel')" style="font-size:11px;padding:4px 8px">❌ ຍົກເລີກ</button>`:''}
+          <button onclick="notifyWA(${DB.bookings.indexOf(b)})" style="background:transparent;border:1.5px solid #25D366;color:#128C7E;padding:4px 8px;border-radius:8px;font-size:11px;cursor:pointer;font-family:'Noto Sans Lao',sans-serif;white-space:nowrap">📲 WhatsApp</button>
+        </div>
+      </td>
+    </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:1.5rem">ບໍ່ມີຂໍ້ມູນ</td></tr>';
+}
+
+function setStatus(idx,status){
+  DB.bookings[idx].status=status;
+  renderBookingTable();
+  showToast(status==='confirm'?'✅ ຢືນຢັນການຈອງແລ້ວ':'❌ ຍົກເລີກການຈອງແລ້ວ');
+}
+
+function notifyWA(idx){
+  var b=DB.bookings[idx];
+  var statusText=b.status==='confirm'?'✅ ຢືນຢັນແລ້ວ':b.status==='cancel'?'❌ ຍົກເລີກ':'⏳ ລໍຖ້າຢືນຢັນ';
+  var msg=
+    '🌸 *Kop Beauty & Spa*\n'+
+    '━━━━━━━━━━━━━━\n'+
+    '📋 REF: '+b.ref+'\n'+
+    '💆 ບໍລິການ: '+b.service+'\n'+
+    '👩 ຊ່າງ: '+b.staff+'\n'+
+    '📅 ວັນທີ: '+b.date+'\n'+
+    '🕐 ເວລາ: '+b.time+'\n'+
+    '💰 ລາຄາ: '+b.price+' ກີບ\n'+
+    '━━━━━━━━━━━━━━\n'+
+    '📌 ສະຖານະ: '+statusText+'\n\n'+
+    'ຂໍຂອບໃຈທີ່ໃຊ້ບໍລິການ 🌸';
+  var phone='856'+b.custPhone.replace(/^0/,'').replace(/\s/g,'');
+  window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');
+  showToast('📲 ເປີດ WhatsApp ໄປຫາ '+b.custName);
+}
+
+/* SERVICES */
+var editSvcId=null;
+function renderSvcTable(){
+  document.getElementById('svc-body').innerHTML=DB.services.map(s=>`
+    <tr>
+      <td style="font-size:22px">${s.icon}</td>
+      <td style="font-weight:600">${s.name}</td>
+      <td style="font-size:12px;color:var(--muted)">${s.desc}</td>
+      <td style="color:var(--gold-dark);font-weight:600">${s.price.toLocaleString()}</td>
+      <td>${s.dur} ນາທີ</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn-sm-outline" onclick="editService(${s.id})" style="font-size:11px;padding:4px 8px">✏️ ແກ້</button>
+          <button class="btn-sm-danger" onclick="deleteService(${s.id})" style="font-size:11px;padding:4px 8px">🗑️ ລົບ</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+function openAddService(){editSvcId=null;document.getElementById('svc-form-title').textContent='+ ເພີ່ມບໍລິການໃໝ່';document.getElementById('sf-icon').value='';document.getElementById('sf-name').value='';document.getElementById('sf-desc').value='';document.getElementById('sf-price').value='';document.getElementById('sf-dur').value='';document.getElementById('svc-form-card').style.display='block';window.scrollTo({top:9999,behavior:'smooth'});}
+function editService(id){
+  var s=DB.services.find(x=>x.id===id);editSvcId=id;
+  document.getElementById('svc-form-title').textContent='✏️ ແກ້ໄຂ: '+s.name;
+  document.getElementById('sf-icon').value=s.icon;document.getElementById('sf-name').value=s.name;document.getElementById('sf-desc').value=s.desc;document.getElementById('sf-price').value=s.price;document.getElementById('sf-dur').value=s.dur;
+  document.getElementById('svc-form-card').style.display='block';window.scrollTo({top:9999,behavior:'smooth'});
+}
+function saveService(){
+  var name=document.getElementById('sf-name').value.trim();
+  var price=parseInt(document.getElementById('sf-price').value);
+  var dur=parseInt(document.getElementById('sf-dur').value);
+  if(!name||!price||!dur){showToast('⚠️ ກວດສອບຂໍ້ມູນໃຫ້ຄົບ');return;}
+  if(editSvcId){
+    var s=DB.services.find(x=>x.id===editSvcId);
+    s.icon=document.getElementById('sf-icon').value||'💆';s.name=name;s.desc=document.getElementById('sf-desc').value;s.price=price;s.dur=dur;
+    showToast('✅ ແກ້ໄຂບໍລິການແລ້ວ');
+  }else{
+    DB.services.push({id:DB.nextSvcId++,icon:document.getElementById('sf-icon').value||'💆',name,desc:document.getElementById('sf-desc').value,price,dur});
+    showToast('✅ ເພີ່ມບໍລິການໃໝ່ແລ້ວ');
+  }
+  closeServiceForm();renderSvcTable();
+}
+function deleteService(id){if(!confirm('ລົບບໍລິການນີ້?'))return;DB.services=DB.services.filter(s=>s.id!==id);renderSvcTable();showToast('🗑️ ລົບບໍລິການແລ້ວ');}
+function closeServiceForm(){document.getElementById('svc-form-card').style.display='none';editSvcId=null;}
+
+/* STAFF */
+var editStaffId=null;
+function renderStaffTable(){
+  document.getElementById('staff-body').innerHTML=DB.staff.map(s=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">${s.icon}</span><span style="font-weight:600">${s.name}</span></div></td>
+      <td style="font-size:12px;color:var(--muted)">${s.spec}</td>
+      <td>⭐ ${s.years} ປີ</td>
+      <td><span class="badge-status ${s.active?'badge-confirm':'badge-cancel'}">${s.active?'✅ ເຮັດວຽກ':'❌ ພັກ'}</span></td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn-sm-outline" onclick="editStaff(${s.id})" style="font-size:11px;padding:4px 8px">✏️ ແກ້</button>
+          <button class="btn-sm-pink" onclick="toggleStaffActive(${s.id})" style="font-size:11px;padding:4px 8px">${s.active?'⏸️ ພັກ':'▶️ ກັບ'}</button>
+          <button class="btn-sm-danger" onclick="deleteStaff(${s.id})" style="font-size:11px;padding:4px 8px">🗑️</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+function openAddStaff(){editStaffId=null;document.getElementById('staff-form-title').textContent='+ ເພີ່ມຊ່າງໃໝ່';['stf-name','stf-spec','stf-years','stf-icon'].forEach(id=>document.getElementById(id).value='');document.getElementById('staff-form-card').style.display='block';window.scrollTo({top:9999,behavior:'smooth'});}
+function editStaff(id){
+  var s=DB.staff.find(x=>x.id===id);editStaffId=id;
+  document.getElementById('staff-form-title').textContent='✏️ ແກ້ໄຂ: '+s.name;
+  document.getElementById('stf-name').value=s.name;document.getElementById('stf-spec').value=s.spec;document.getElementById('stf-years').value=s.years;document.getElementById('stf-icon').value=s.icon;
+  document.getElementById('staff-form-card').style.display='block';window.scrollTo({top:9999,behavior:'smooth'});
+}
+function saveStaff(){
+  var name=document.getElementById('stf-name').value.trim();
+  if(!name){showToast('⚠️ ໃສ່ຊື່ຊ່າງ');return;}
+  if(editStaffId){
+    var s=DB.staff.find(x=>x.id===editStaffId);
+    s.name=name;s.spec=document.getElementById('stf-spec').value;s.years=parseInt(document.getElementById('stf-years').value)||0;s.icon=document.getElementById('stf-icon').value||'👩';
+    showToast('✅ ແກ້ໄຂຂໍ້ມູນຊ່າງແລ້ວ');
+  }else{
+    var newId=DB.nextStaffId++;
+    DB.staff.push({id:newId,icon:document.getElementById('stf-icon').value||'👩',name,spec:document.getElementById('stf-spec').value,years:parseInt(document.getElementById('stf-years').value)||0,active:true});
+    days.forEach(function(d,i){DB.schedule[newId+'_'+i]=(i>0&&i<6);});
+    showToast('✅ ເພີ່ມຊ່າງໃໝ່ແລ້ວ');
+  }
+  closeStaffForm();renderStaffTable();renderSchedule();
+}
+function toggleStaffActive(id){var s=DB.staff.find(x=>x.id===id);s.active=!s.active;renderStaffTable();}
+function deleteStaff(id){if(!confirm('ລົບຊ່າງຄົນນີ້?'))return;DB.staff=DB.staff.filter(s=>s.id!==id);renderStaffTable();renderSchedule();showToast('🗑️ ລົບຊ່າງແລ້ວ');}
+function closeStaffForm(){document.getElementById('staff-form-card').style.display='none';editStaffId=null;}
+
+function renderSchedule(){
+  var g=document.getElementById('schedule-grid');
+  g.style.gridTemplateColumns='120px repeat('+days.length+',1fr)';
+  var html='<div class="sch-cell head">ຊ່າງ</div>'+days.map(d=>`<div class="sch-cell head">${d}</div>`).join('');
+  DB.staff.forEach(function(s){
+    html+=`<div class="sch-cell staff-name-cell">${s.icon} ${s.name}</div>`;
+    days.forEach(function(d,i){
+      var key=s.id+'_'+i;var on=DB.schedule[key];
+      html+=`<div class="sch-cell ${on?'work':'off'}" onclick="toggleSchedule(${s.id},${i})" title="${s.name} ${d}">${on?'✅':'❌'}</div>`;
+    });
+  });
+  g.innerHTML=html;
+}
+function toggleSchedule(staffId,dayIdx){
+  var key=staffId+'_'+dayIdx;DB.schedule[key]=!DB.schedule[key];renderSchedule();
+}
+
+/* CUSTOMERS */
+function renderCustomers(){
+  var custs=DB.users.map(function(u){
+    var bks=DB.bookings.filter(b=>b.custPhone===u.phone);
+    var income=bks.filter(b=>b.status==='confirm').reduce((s,b)=>s+parseInt(b.price.replace(/,/g,'')),0);
+    var last=bks.length?bks[bks.length-1].date:'-';
+    return{...u,bkCount:bks.length,income,last};
+  });
+  document.getElementById('cust-count').textContent=custs.length+' ຄົນ';
+  document.getElementById('cust-body').innerHTML=custs.map(c=>`
+    <tr style="cursor:pointer" onclick="showCustHistory('${c.phone}')">
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="cust-avatar">👤</div><span style="font-weight:500">${c.name}</span></div></td>
+      <td style="font-family:monospace;font-size:12px">${c.phone}</td>
+      <td><span style="font-weight:700;color:var(--charcoal)">${c.bkCount}</span> ຄັ້ງ</td>
+      <td style="font-size:12px;color:var(--muted)">${c.last}</td>
+      <td style="color:var(--gold-dark);font-weight:600">${c.income.toLocaleString()}</td>
+    </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.5rem">ບໍ່ມີລູກຄ້າ</td></tr>';
+}
+function showCustHistory(phone){
+  var u=DB.users.find(x=>x.phone===phone);
+  var bks=DB.bookings.filter(b=>b.custPhone===phone);
+  document.getElementById('cust-history-title').textContent='📜 ປະຫວັດ: '+u.name;
+  document.getElementById('cust-history-body').innerHTML=bks.map(b=>`
+    <tr>
+      <td style="font-family:monospace;font-size:11px">${b.ref}</td>
+      <td>${b.service}</td><td>${b.staff}</td>
+      <td style="font-size:12px">${b.date} ${b.time}</td>
+      <td style="color:var(--gold-dark);font-weight:600">${b.price}</td>
+      <td><span class="badge-status badge-${b.status}">${b.status==='confirm'?'✅ ຢືນຢັນ':b.status==='cancel'?'❌ ຍົກເລີກ':'⏳ ລໍຖ້າ'}</span></td>
+    </tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:1rem">ຍັງບໍ່ມີປະຫວັດ</td></tr>';
+  document.getElementById('cust-history').style.display='block';
+  window.scrollTo({top:9999,behavior:'smooth'});
+}
+
+/* PROMO */
+function renderPromoCustomers(){
+  var sel=document.getElementById('promo-cust-select');
+  sel.innerHTML='<option value="">ເລືອກລູກຄ້າ...</option>'+
+    DB.users.map(u=>`<option value="${u.phone}">${u.name} (${u.phone})</option>`).join('');
+}
+function sendPromoAll(){
+  var msg=document.getElementById('promo-msg-all').value.trim();
+  if(!msg){showToast('⚠️ ໃສ່ຂໍ້ຄວາມ');return;}
+  var waMsg=encodeURIComponent(msg);
+  DB.users.forEach(function(u){
+    window.open('https://wa.me/856'+u.phone.replace(/^0/,'').replace(/\s/g,'')+'?text='+waMsg,'_blank');
+  });
+  DB.promoLog.unshift({time:new Date().toLocaleTimeString(),msg:'[ທຸກຄົນ] '+msg.slice(0,40)+'...'});
+  renderPromoLog();
+  document.getElementById('promo-msg-all').value='';
+  showToast('📤 ເປີດ WhatsApp ສຳລັບລູກຄ້າທຸກຄົນ');
+}
+function sendPromoOne(){
+  var phone=document.getElementById('promo-cust-select').value;
+  var msg=document.getElementById('promo-msg-one').value.trim();
+  if(!phone||!msg){showToast('⚠️ ເລືອກລູກຄ້າ ແລະ ໃສ່ຂໍ້ຄວາມ');return;}
+  var u=DB.users.find(x=>x.phone===phone);
+  window.open('https://wa.me/856'+phone.replace(/^0/,'').replace(/\s/g,'')+'?text='+encodeURIComponent(msg),'_blank');
+  DB.promoLog.unshift({time:new Date().toLocaleTimeString(),msg:'['+u.name+'] '+msg.slice(0,40)});
+  renderPromoLog();
+  document.getElementById('promo-msg-one').value='';
+  showToast('📤 ເປີດ WhatsApp ສຳລັບ '+u.name);
+}
+function renderPromoLog(){
+  document.getElementById('promo-log').innerHTML=DB.promoLog.map(l=>
+    `<div style="padding:6px 10px;background:var(--cream);border-radius:8px;font-size:11px"><span style="color:var(--muted)">${l.time}</span> ${l.msg}</div>`
+  ).join('')||'<div style="color:var(--muted)">ຍັງບໍ່ມີປະຫວັດ</div>';
+}
+
+/* ============================================================
+   BOOKING FLOW
+   ============================================================ */
+var bk={service:'',price:'',dur:'',staff:'',date:'',time:'',name:'',phone:''};
+var curStep=1,curYear=2026,curMonth=2;
+var MN=['ມັງກອນ','ກຸມພາ','ມີນາ','ເມສາ','ພຶດສະພາ','ມິຖຸນາ','ກໍລະກົດ','ສິງຫາ','ກັນຍາ','ຕຸລາ','ພະຈິກ','ທັນວາ'];
+
+function renderBookingServices(){
+  document.getElementById('service-grid-bk').innerHTML=DB.services.map(s=>`
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="service-card" onclick="pickService(this,'${s.name}','${s.price.toLocaleString()}','${s.dur}')">
+        <span class="svc-icon">${s.icon}</span>
+        <div class="svc-name">${s.name}</div>
+        <div class="svc-desc">${s.desc}</div>
+        <div class="svc-price">${s.price.toLocaleString()} ກີບ</div>
+        <div class="svc-dur">${s.dur>=60?Math.floor(s.dur/60)+' ຊ.':s.dur+' ນ.'}</div>
+      </div>
+    </div>`).join('');
+}
+function renderBookingStaff(){
+  var colors=['#FFF0EC','#F0F7FF','#F7F0FF','#F0FFF4','#FFFBE6','#FFF0F8'];
+  document.getElementById('staff-grid-bk').innerHTML=DB.staff.filter(s=>s.active).map((s,i)=>`
+    <div class="col-6 col-md-3">
+      <div class="staff-card" onclick="pickStaff(this,'${s.name}')">
+        <div class="staff-avatar" style="background:${colors[i%colors.length]}">${s.icon}</div>
+        <div class="staff-name">${s.name}</div>
+        <div class="staff-spec">${s.spec}</div>
+        <div class="staff-badge">⭐ ${s.years} ປີ</div>
+      </div>
+    </div>`).join('');
+}
+
+function goStep(n){
+  document.getElementById('p'+curStep).classList.remove('active');
+  curStep=n;document.getElementById('p'+n).classList.add('active');
+  updateStepBar();window.scrollTo({top:0,behavior:'smooth'});
+  if(n===3)renderCalendar();
+}
+function updateStepBar(){
+  for(var i=1;i<=5;i++){
+    var si=document.getElementById('si'+i),sn=document.getElementById('sn'+i);
+    si.className='step-item';
+    if(i<curStep){si.classList.add('done');sn.textContent='✓';}
+    else if(i===curStep){si.classList.add('active');sn.textContent=i;}
+    else sn.textContent=i;
+  }
+}
+function pickService(el,name,price,dur){
+  document.querySelectorAll('.service-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');bk.service=name;bk.price=price;bk.dur=dur+' ນາທີ';
+  document.getElementById('btn1').disabled=false;
+}
+function pickStaff(el,name){
+  document.querySelectorAll('.staff-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');bk.staff=name;document.getElementById('btn2').disabled=false;
+}
+function pickTime(el,t){
+  document.querySelectorAll('.time-slot:not(.busy)').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');bk.time=t+' ໂມງ';document.getElementById('btn4').disabled=false;
+}
+function checkForm(){
+  var n=document.getElementById('f-name').value.trim();
+  var p=document.getElementById('f-phone').value.trim();
+  bk.name=n;bk.phone=p;
+  document.getElementById('btn5').disabled=!(n.length>2&&p.length>8);
+}
+function renderCalendar(){
+  document.getElementById('cal-month-label').textContent=MN[curMonth]+' '+curYear;
+  var g=document.getElementById('cal-grid');g.innerHTML='';
+  var first=new Date(curYear,curMonth,1).getDay();
+  var days2=new Date(curYear,curMonth+1,0).getDate();
+  var today=new Date();today.setHours(0,0,0,0);
+  for(var i=0;i<first;i++){var e=document.createElement('div');e.className='date-cell empty';g.appendChild(e);}
+  for(var d=1;d<=days2;d++){
+    var cell=document.createElement('div');
+    var dt=new Date(curYear,curMonth,d);dt.setHours(0,0,0,0);
+    cell.className='date-cell';cell.textContent=d;
+    if(dt<today){cell.classList.add('past');}
+    else{
+      (function(el,day,mo,yr){
+        el.onclick=function(){
+          document.querySelectorAll('.date-cell').forEach(c=>c.classList.remove('sel'));
+          el.classList.add('sel');bk.date=day+' '+MN[mo]+' '+yr;
+          document.getElementById('btn3').disabled=false;
+        };
+      })(cell,d,curMonth,curYear);
+    }
+    if(dt.getTime()===today.getTime())cell.classList.add('today');
+    g.appendChild(cell);
+  }
+}
+function prevMonth(){curMonth--;if(curMonth<0){curMonth=11;curYear--;}renderCalendar();}
+function nextMonth(){curMonth++;if(curMonth>11){curMonth=0;curYear++;}renderCalendar();}
+
+function showSummary(){
+  bk.name=document.getElementById('f-name').value.trim();
+  bk.phone=document.getElementById('f-phone').value.trim();
+  ['service','staff','date','time','dur','name','phone'].forEach(k=>document.getElementById('s-'+k).textContent=bk[k]||'-');
+  document.getElementById('s-price').textContent=bk.price+' ກີບ';
+  document.getElementById('p5').classList.remove('active');
+  curStep=6;document.getElementById('p6').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function confirmBooking(){
+  /* ── ສະແດງ Loading Spinner ── */
+  var ld = document.getElementById('booking-loading');
+  ld.classList.add('active');
+  var msgs = [
+    ['ກຳລັງບັນທຶກການຈອງ...', 'ກະລຸນາລໍຖ້າສັກຄູ່ 🙏'],
+    ['ກຳລັງຊຳລະເງິນ...', 'ດຳເນີນການຢ່າງປອດໄພ 🔒'],
+    ['ກຳລັງຢືນຢັນ...', 'ເກືອບສຳເລັດແລ້ວ ✨']
+  ];
+  var mi = 0;
+  function nextMsg(){
+    if(mi < msgs.length){
+      document.getElementById('loading-msg').textContent = msgs[mi][0];
+      document.getElementById('loading-sub').textContent = msgs[mi][1];
+      mi++;
+      setTimeout(nextMsg, 700);
+    }
+  }
+  nextMsg();
+
+  setTimeout(function(){
+    var ref='BK-'+DB.nextRef++;
+    DB.bookings.push({
+      ref,custName:bk.name,custPhone:bk.phone,
+      service:bk.service,staff:bk.staff,
+      date:bk.date,time:bk.time,price:bk.price,status:'confirm'
+    });
+    document.getElementById('ref-num').textContent=ref;
+    document.getElementById('d-service').textContent=bk.service;
+    document.getElementById('d-staff').textContent=bk.staff;
+    document.getElementById('d-dt').textContent=bk.date+' '+bk.time;
+    document.getElementById('d-price').textContent=bk.price+' ກີບ';
+    document.getElementById('p6').classList.remove('active');
+    curStep=7;document.getElementById('p7').classList.add('active');
+    ld.classList.remove('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 2200);
+}
+function resetAll(){
+  bk={service:'',price:'',dur:'',staff:'',date:'',time:'',name:'',phone:''};
+  document.querySelectorAll('.service-card,.staff-card,.date-cell,.time-slot').forEach(c=>c.classList.remove('sel'));
+  ['f-name','f-phone','f-email','f-age','f-note'].forEach(id=>document.getElementById(id).value='');
+  ['btn1','btn2','btn3','btn4','btn5'].forEach(id=>document.getElementById(id).disabled=true);
+  document.getElementById('p7').classList.remove('active');
+  curStep=1;document.getElementById('p1').classList.add('active');
+  renderBookingServices();renderBookingStaff();
+  updateStepBar();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#4A1942,#C0496E);color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:500;box-shadow:0 4px 24px rgba(74,25,66,.35);z-index:9999;white-space:nowrap;font-family:"Noto Sans Lao",sans-serif;';
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .4s';setTimeout(function(){t.remove();},400);},3000);
+}
+
+/* INIT */
+(function(){ })();
+</script>
+</body>
+</html>
